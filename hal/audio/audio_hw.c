@@ -443,12 +443,12 @@ static void select_devices(struct audio_device *adev)
     int new_route_id;
     int new_es325_preset = -1;
 
-    audio_route_reset(adev->ar);
-
     enable_hdmi_audio(adev, adev->out_device & AUDIO_DEVICE_OUT_AUX_DIGITAL);
     new_route_id = (1 << (input_source_id + OUT_DEVICE_CNT)) + (1 << output_device_id);
-    if ((new_route_id == adev->cur_route_id) && (adev->es325_mode == adev->es325_new_mode))
+    if ((new_route_id == adev->cur_route_id) && (adev->es325_mode == adev->es325_new_mode)) {
+        ALOGV("%s: Routing hasn't changed, leaving function.", __func__);
         return;
+    }
     adev->cur_route_id = new_route_id;
     adev->es325_mode = adev->es325_new_mode;
 
@@ -487,6 +487,8 @@ static void select_devices(struct audio_device *adev)
           adev->out_device, adev->input_source,
           output_route ? output_route : "none",
           input_route ? input_route : "none");
+
+    audio_route_reset(adev->ar);
 
     if (output_route)
         audio_route_apply_path(adev->ar, output_route);
