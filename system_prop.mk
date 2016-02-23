@@ -17,3 +17,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=1 \
     ro.sec.fle.encryption=true \
     ro.secwvk=220
+
+# Disable persistent GPU compositing
+debug.sf.disable_hwc=1
