@@ -17,3 +17,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=1 \
     ro.sec.fle.encryption=true \
     ro.secwvk=220
+
+# Fixes game grashing (HeartStone)
+debug.egl.force_msaa=true
+
+# Disable persistent GPU compositing
+debug.sf.disable_hwc=1
