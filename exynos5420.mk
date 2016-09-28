@@ -20,6 +20,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
+# Camera
+PRODUCT_PACKAGES += \
+    camera.universal5420 \
+    libhwjpeg
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    camera2.portability.force_api=1
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
