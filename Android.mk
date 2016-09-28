@@ -16,12 +16,10 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(BOARD_VENDOR),samsung)
-ifeq ($(TARGET_SOC),exynos5420)
+SAMSUNG_TARGETS := n2awifi,n1awifi,n1a3g,v1awifi,v2awifi,klimtlte,klimtwifi,chagallwifi,chagalllte,chagallltetmo
 
-include $(call all-subdir-makefiles,$(LOCAL_PATH))
+ifneq ($(filter $(SAMSUNG_TARGETS),$(TARGET_DEVICE)),)
 
-include $(CLEAR_VARS)
+include $(call all-makefiles-under,$(LOCAL_PATH))
 
-endif
 endif
