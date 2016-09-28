@@ -29,6 +29,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     consumerir.universal5420
 
+# Radio (needed for audio controls even on wifi-only)
+PRODUCT_PACKAGES += \
+    libsecril-client \
+    libsecril-client-sap
+
 # IO Scheduler
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.io.scheduler=bfq
