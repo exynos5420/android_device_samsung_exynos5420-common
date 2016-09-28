@@ -60,3 +60,6 @@ TARGET_POWERHAL_VARIANT := samsung
 
 # Force the screenshot path to CPU consumer
 COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
+
+# Samsung Gralloc
+TARGET_SAMSUNG_GRALLOC_EXTERNAL_USECASES := true
