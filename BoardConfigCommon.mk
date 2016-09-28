@@ -16,5 +16,10 @@
 
 LOCAL_PATH := device/samsung/exynos5420-common
 
+# Kernel
+BOARD_KERNEL_BASE := 0x10000000
+BOARD_KERNEL_PAGESIZE := 2048
+TARGET_KERNEL_SOURCE := kernel/samsung/exynos5420
+
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
