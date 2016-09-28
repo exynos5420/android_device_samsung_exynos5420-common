@@ -20,6 +20,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
+# HW composer
+PRODUCT_PACKAGES += \
+    libion \
+    gralloc.exynos5
+
 # IR
 PRODUCT_PACKAGES += \
     consumerir.universal5420
