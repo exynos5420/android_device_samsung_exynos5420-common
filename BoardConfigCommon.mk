@@ -129,3 +129,6 @@ ENABLE_WEBGL := true
 
 # WFD
 BOARD_USES_WFD := true
+
+# inherit from the proprietary version
+-include vendor/samsung/exynos5420-common/BoardConfigVendor.mk
