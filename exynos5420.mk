@@ -29,6 +29,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     consumerir.universal5420
 
+# Power
+PRODUCT_PACKAGES += \
+    power.universal5420
+
 # Ramdisk
 PRODUCT_PACKAGES += \
     fstab.universal5420
