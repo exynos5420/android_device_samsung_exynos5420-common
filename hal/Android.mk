@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2011 The Android Open-Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,6 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/exynos5420-common
+LOCAL_PATH := $(call my-dir)
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
-
-# IR
-PRODUCT_PACKAGES += \
-    consumerir.universal5420
-
-# call Samsung LSI board support package
-$(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
-$(call inherit-product, hardware/samsung_slsi-cm/exynos5420/exynos5420.mk)
+include $(call all-makefiles-under,$(LOCAL_PATH))

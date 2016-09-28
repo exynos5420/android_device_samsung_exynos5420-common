@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2014 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-LOCAL_PATH := device/samsung/exynos5420-common
+# HAL module implementation stored in
+# hw/<POWERS_HARDWARE_MODULE_ID>.<ro.hardware>.so
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+LOCAL_PATH := $(call my-dir)
 
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+include $(CLEAR_VARS)
 
-# IR
-PRODUCT_PACKAGES += \
-    consumerir.universal5420
+LOCAL_MODULE := consumerir.universal5420
+LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
+LOCAL_SRC_FILES := consumerir.c
+LOCAL_SHARED_LIBRARIES := liblog libcutils
+LOCAL_MODULE_TAGS := optional
 
-# call Samsung LSI board support package
-$(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
-$(call inherit-product, hardware/samsung_slsi-cm/exynos5420/exynos5420.mk)
+include $(BUILD_SHARED_LIBRARY)
