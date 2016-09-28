@@ -29,6 +29,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     consumerir.universal5420
 
+# MobiCore setup
+PRODUCT_PACKAGES += \
+    libMcClient \
+    libMcRegistry \
+    libPaApi \
+    libgdmcprov
+
 # Network tools
 PRODUCT_PACKAGES += \
     libpcap \
