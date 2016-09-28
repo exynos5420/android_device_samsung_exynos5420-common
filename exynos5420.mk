@@ -28,6 +28,10 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/audio/audio_effects.conf:system/etc/audio_effects.conf
 
+# GPS
+PRODUCT_PACKAGES += \
+    gps.universal5420
+
 # Camera
 PRODUCT_PACKAGES += \
     camera.universal5420 \
