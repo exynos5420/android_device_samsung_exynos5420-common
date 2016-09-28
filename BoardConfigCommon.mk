@@ -29,13 +29,17 @@ TARGET_CPU_VARIANT := cortex-a15
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 
+# Camera (SNUMINTS is defined in the device tree)
+BOARD_NEEDS_MEMORYHEAPION := true
+COMMON_GLOBAL_CFLAGS += -DCAMERA_SNUMINTS=$(BOARD_CAMERA_SNUMINTS)
+
+# Force the screenshot path to CPU consumer
+COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
+
 # Kernel
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos5420
-
-# Force the screenshot path to CPU consumer
-COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 
 # Charging mode
 BOARD_CHARGER_SHOW_PERCENTAGE := true
