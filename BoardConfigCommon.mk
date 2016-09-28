@@ -44,3 +44,6 @@ TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.universal5420
 
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
+
+# Unified PowerHAL
+TARGET_POWERHAL_VARIANT := samsung
