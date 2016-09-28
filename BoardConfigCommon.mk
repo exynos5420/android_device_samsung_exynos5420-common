@@ -53,6 +53,9 @@ TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
 
 # Recovery
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_RECOVERY_SWIPE := true
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.universal5420
 
 # Unified PowerHAL
