@@ -29,6 +29,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     consumerir.universal5420
 
+# Network tools
+PRODUCT_PACKAGES += \
+    libpcap \
+    tcpdump
+
 # OMX
 PRODUCT_PACKAGES += \
     libcsc
