@@ -47,3 +47,6 @@ TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
 # Unified PowerHAL
 TARGET_POWERHAL_VARIANT := samsung
+
+# Force the screenshot path to CPU consumer
+COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
