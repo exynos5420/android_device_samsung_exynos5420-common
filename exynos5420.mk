@@ -29,6 +29,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     consumerir.universal5420
 
+# libstlport
+PRODUCT_PACKAGES += \
+    libstlport
+
 # Lights
 PRODUCT_PACKAGES += \
     lights.universal5420
