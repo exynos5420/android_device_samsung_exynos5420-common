@@ -123,7 +123,9 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    fstab.universal5420
+    fstab.universal5420 \
+    init.universal5420.usb.rc \
+    init.universal5420.wifi.rc
 
 # Radio (needed for audio controls even on wifi-only)
 PRODUCT_PACKAGES += \
