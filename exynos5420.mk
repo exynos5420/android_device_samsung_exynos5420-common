@@ -34,6 +34,10 @@ PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap
 
+# Sensors
+PRODUCT_PACKAGES += \
+    sensors.universal5420
+
 # IO Scheduler
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.io.scheduler=bfq
