@@ -87,6 +87,9 @@ BOARD_USES_HWC_SERVICES := true
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
 
+# Keymaster
+BOARD_USES_TRUST_KEYMASTER := true
+
 # OpenMAX Video
 BOARD_USE_STOREMETADATA := true
 BOARD_USE_METADATABUFFERTYPE := true
