@@ -90,6 +90,10 @@ BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
 # Keymaster
 BOARD_USES_TRUST_KEYMASTER := true
 
+# Extended filesystem support
+TARGET_KERNEL_HAVE_EXFAT := true
+TARGET_KERNEL_HAVE_NTFS := true
+
 # OpenMAX Video
 BOARD_USE_STOREMETADATA := true
 BOARD_USE_METADATABUFFERTYPE := true
