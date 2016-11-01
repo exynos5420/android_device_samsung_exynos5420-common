@@ -58,3 +58,8 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 BOARD_BATTERY_DEVICE_NAME := battery
 BACKLIGHT_PATH := "/sys/class/backlight/panel/brightness"
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := universal5420
+TARGET_NO_BOOTLOADER := true
+TARGET_NO_RADIOIMAGE := true
