@@ -19,6 +19,12 @@ LOCAL_PATH := device/samsung/exynos5420-common
 # Include path
 TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
+# Bluetooth
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_BCM := true
+BOARD_HAVE_SAMSUNG_BLUETOOTH := true
+BOARD_BLUEDROID_VENDOR_CONF := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
+
 # Camera
 BOARD_CAMERA_SNUMINTS := 34
 BOARD_NEEDS_MEMORYHEAPION := true
