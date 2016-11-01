@@ -17,7 +17,7 @@
 LOCAL_PATH := device/samsung/exynos5420-common
 
 # Include path
-TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
 # Camera
 BOARD_CAMERA_SNUMINTS := 34
