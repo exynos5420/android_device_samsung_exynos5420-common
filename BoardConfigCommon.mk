@@ -29,9 +29,6 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
 TARGET_CPU_VARIANT := cortex-a15
 
-# Include path
-TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
-
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
@@ -83,6 +80,9 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
+
+# Include path
+TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
