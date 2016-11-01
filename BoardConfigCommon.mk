@@ -84,6 +84,9 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
 
+# Hardware
+BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
+
 # OpenMAX Video
 BOARD_USE_STOREMETADATA := true
 BOARD_USE_METADATABUFFERTYPE := true
