@@ -118,3 +118,6 @@ BOARD_FLASH_BLOCK_SIZE := 4096
 
 # Enable dex-preoptimization to speed up first boot sequence
 WITH_DEXPREOPT := true
+
+# Unified PowerHAL
+TARGET_POWERHAL_VARIANT := samsung
