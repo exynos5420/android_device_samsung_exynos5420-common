@@ -16,6 +16,19 @@
 
 LOCAL_PATH := device/samsung/exynos5420-common
 
+# Platform
+TARGET_BOARD_PLATFORM := exynos5
+TARGET_SLSI_VARIANT := cm
+
+# Architecture
+TARGET_ARCH := arm
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_VARIANT := cortex-a15
+TARGET_CPU_ABI := armeabi-v7a
+TARGET_CPU_ABI2 := armeabi
+TARGET_CPU_SMP := true
+TARGET_CPU_VARIANT := cortex-a15
+
 # Include path
 TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
