@@ -137,3 +137,6 @@ BOARD_USES_GSC_VIDEO := true
 
 # Webkit
 ENABLE_WEBGL := true
+
+# WFD
+BOARD_USES_WFD := true
