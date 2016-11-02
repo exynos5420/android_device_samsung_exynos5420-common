@@ -84,6 +84,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fstab.universal5420
 
+# Radio (needed for audio controls even on wifi-only)
+PRODUCT_PACKAGES += \
+    libsecril-client \
+    libsecril-client-sap
+
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
