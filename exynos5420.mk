@@ -39,6 +39,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.universal5420
 
+# HW composer
+PRODUCT_PACKAGES += \
+    libion \
+    gralloc.exynos5
+
 # IR
 PRODUCT_PACKAGES += \
     consumerir.universal5420
