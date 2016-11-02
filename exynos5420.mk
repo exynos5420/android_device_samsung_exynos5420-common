@@ -20,9 +20,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
-# IR
-PRODUCT_PACKAGES += \
-    consumerir.universal5420
+# Boot animation
+TARGET_BOOTANIMATION_HALF_RES := true
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -35,6 +34,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Remove packages that do not work well
 PRODUCT_PACKAGES += \
     RemovePackages
+
+# GPS
+PRODUCT_PACKAGES += \
+    gps.universal5420
+
+# IR
+PRODUCT_PACKAGES += \
+    consumerir.universal5420
 
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
