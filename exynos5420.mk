@@ -65,6 +65,11 @@ PRODUCT_PACKAGES += \
     libPaApi \
     libgdmcprov
 
+# Network tools
+PRODUCT_PACKAGES += \
+    libpcap \
+    tcpdump
+
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
