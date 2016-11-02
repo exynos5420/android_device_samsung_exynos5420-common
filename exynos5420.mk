@@ -70,6 +70,12 @@ PRODUCT_PACKAGES += \
     libpcap \
     tcpdump
 
+# OMX
+PRODUCT_PACKAGES += \
+    libcsc \
+    libOMX.Exynos.WMV.Decoder \
+    libOMX.Exynos.MPEG2.Decoder
+
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
