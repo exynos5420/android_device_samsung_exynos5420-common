@@ -76,6 +76,10 @@ PRODUCT_PACKAGES += \
     libOMX.Exynos.WMV.Decoder \
     libOMX.Exynos.MPEG2.Decoder
 
+# Power
+PRODUCT_PACKAGES += \
+    power.universal5420
+
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
