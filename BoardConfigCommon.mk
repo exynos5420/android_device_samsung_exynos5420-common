@@ -114,6 +114,9 @@ BOARD_USE_VP8ENC_SUPPORT := true
 # Enable dex-preoptimization to speed up first boot sequence
 WITH_DEXPREOPT := true
 
+# Disable journaling on system.img to save space
+BOARD_SYSTEMIMAGE_JOURNAL_SIZE := 0
+
 # Unified PowerHAL
 TARGET_POWERHAL_VARIANT := samsung
 
