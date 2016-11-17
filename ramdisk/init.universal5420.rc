@@ -344,10 +344,14 @@ on boot
     chown system radio /sys/class/sec/sec_ir/ir_send
     chown system radio /sys/class/sec/sec_ir/ir_send_result
 
-# Permissions for Barcode Emul		
-    chown system radio /sys/class/sec/sec_barcode_emul/barcode_send		
-    chown system radio /sys/class/sec/sec_barcode_emul/barcode_ver_check		
+# Permissions for Barcode Emul
+    chown system radio /sys/class/sec/sec_barcode_emul/barcode_send
+    chown system radio /sys/class/sec/sec_barcode_emul/barcode_ver_check
     chown system radio /sys/class/sec/sec_barcode_emul/barcode_led_status
+
+#Thermal Tuning
+    write /sys/class/thermal/thermal_zone0/oneshot_trip_temp 70 80 85 95
+    write /sys/class/thermal/thermal_zone0/oneshot_trip_temp 1800 1700 1200 600
 
 on fs
     mount_all /fstab.universal5420
