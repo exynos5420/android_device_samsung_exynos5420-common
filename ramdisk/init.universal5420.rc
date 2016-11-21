@@ -144,6 +144,7 @@ on boot
     chown system radio /sys/class/sec/sec_touchkey/touchkey_factory_mode
     chown system radio /sys/class/sec/sec_touchkey/touch_sensitivity
     chown system radio /sys/class/sec/sec_touchkey/glove_mode
+    chmod 0664 /sys/class/sec/sec_touchkey/glove_mode
     chown system radio /sys/class/sec/sec_touchkey/flip_mode
     chown system radio /sys/class/sec/sec_touchkey/boost_level
     chown system radio /sys/class/sec/sec_touchkey/extra_button_event
