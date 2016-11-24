@@ -57,6 +57,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.universal5420
 
+# Shims
+PRODUCT_PACKAGES += \
+    libshims_wvm
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
