@@ -210,4 +210,7 @@
          true will use SystemClock.elapsedRealtimeNanos() to set timestamp. -->
     <bool name="config_useSystemClockforRotationSensor">true</bool>
 
+    <!-- The device supports freeform window management -->
+    <bool name="config_freeformWindowManagement">true</bool>
+
 </resources>
