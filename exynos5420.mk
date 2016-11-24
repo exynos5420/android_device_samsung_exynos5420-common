@@ -45,9 +45,6 @@ TARGET_BOOTANIMATION_HALF_RES := true
 PRODUCT_PACKAGES += \
     libhwjpeg
 
-PRODUCT_PROPERTY_OVERRIDES += \
-    camera2.portability.force_api=1
-
 # Remove packages that do not work well
 PRODUCT_PACKAGES += \
     RemovePackages
