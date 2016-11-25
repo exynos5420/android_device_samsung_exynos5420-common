@@ -97,17 +97,6 @@ on post-fs-data
 #    chown system system /data/privatemode
 #    restorecon /data/privatemode
 
-# Bluetooth dhcpcd config
-service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
-    class main
-        disabled
-        oneshot
-
-service iprenew_bt-pan /system/bin/dhcpcd -n
-    class late_start
-        disabled
-        oneshot
-
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
@@ -455,17 +444,6 @@ service watchdogd /sbin/watchdogd 10 20
 #    group bluetooth net_bt_admin
 #    disabled
 #    oneshot
-
-# for ethernet
-service dhcpcd_eth0 /system/bin/dhcpcd -aABDKL
-    class late_start
-    disabled
-    oneshot
-
-service iprenew_eth0 /system/bin/dhcpcd -n
-    class late_start
-    disabled
-    oneshot
 
 # Kick watchdogd if debug_level is low
 on property:ro.debug_level=0x4f4c
