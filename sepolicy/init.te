@@ -1,5 +1,3 @@
-allow init drmserver_service:service_manager add;
-
 # read/chown mDNIE symlinks
 allow init sysfs_mdnie_writable:lnk_file { read setattr };
 
