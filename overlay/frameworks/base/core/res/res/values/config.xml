@@ -213,4 +213,7 @@
     <!-- The device supports freeform window management -->
     <bool name="config_freeformWindowManagement">true</bool>
 
+    <!-- Enable LockScreen rotation -->
+    <bool name="config_enableLockScreenRotation">true</bool>
+
 </resources>
