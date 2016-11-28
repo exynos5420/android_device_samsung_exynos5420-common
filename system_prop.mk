@@ -17,3 +17,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=1 \
     ro.sec.fle.encryption=true \
     ro.secwvk=220
+
+# LockScreen Rotation
+#PRODUCT_PROPERTY_OVERRIDES += \
+#    lockscreen.rot_override=true
