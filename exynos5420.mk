@@ -57,6 +57,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libshims_wvm
 
+# Stlport
+PRODUCT_PACKAGES += \
+    libstlport
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
