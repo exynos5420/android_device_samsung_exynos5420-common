@@ -188,6 +188,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Enable multi-window by default
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.debug.multi_window=true
+	
+# Deathly Adiutor App
+PRODUCT_PACKAGES += \
+    DeathlyAdiutor
 
 # Legacy stagefright media
 PRODUCT_PROPERTY_OVERRIDES += \
