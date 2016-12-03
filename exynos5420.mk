@@ -185,6 +185,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.debug.multi_window=true
 
+# Deathly Adiutor App
+PRODUCT_PACKAGES += \
+    DeathlyAdiutor
+
 # call dalvik heap and hwui config
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
 
