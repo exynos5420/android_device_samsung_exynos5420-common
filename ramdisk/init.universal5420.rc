@@ -57,6 +57,16 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 20000
 
+    # Ondemand
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor ondemand
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor ondemand
+    write /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor ondemand
+    write /sys/devices/system/cpu/cpufreq/ondemand/max_freq_blank 1400000
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_b 800000
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_step_level_l 500000
+    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 95
+
 on post-fs-data
     setprop vold.post_fs_data_done 1
 
