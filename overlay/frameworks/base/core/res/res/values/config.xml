@@ -183,8 +183,8 @@
     <!-- Our gralloc has support for protected buffers -->
     <bool name="config_wifiDisplaySupportsProtectedBuffers">true</bool>
 
-    <!-- IpReachability monitor enable/Disable -->
-    <bool translatable="false" name="config_wifi_ipreachability_monitor">false</bool>
+    <!-- IpReachability monitor enable/Disable
+    <bool translatable="false" name="config_wifi_ipreachability_monitor">false</bool-->
 
     <!--  Maximum number of supported users -->
     <integer name="config_multiuserMaximumUsers">8</integer>
@@ -207,8 +207,8 @@
     <bool name="config_enableAutoPowerModes">true</bool>
 
     <!-- Older rotation sensors are not setting event.timestamp correctly. Setting to
-         true will use SystemClock.elapsedRealtimeNanos() to set timestamp. -->
-    <bool name="config_useSystemClockforRotationSensor">true</bool>
+         true will use SystemClock.elapsedRealtimeNanos() to set timestamp.
+    <bool name="config_useSystemClockforRotationSensor">true</bool-->
 
     <!-- The device supports freeform window management -->
     <bool name="config_freeformWindowManagement">true</bool>
