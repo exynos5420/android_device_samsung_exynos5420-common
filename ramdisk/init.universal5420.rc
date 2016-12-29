@@ -84,6 +84,11 @@ on post-fs-data
 #    chown system system /data/privatemode
 #    restorecon /data/privatemode
 
+# Symlink preload somewhere media scanner can find it
+    mkdir /data/preload 0770 system system
+    chown system system /data/preload
+    symlink /preload /data/preload
+
 # Bluetooth dhcpcd config
 service dhcpcd_bt-pan /system/bin/dhcpcd -ABKL
     class main
