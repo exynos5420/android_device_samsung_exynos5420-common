@@ -14,7 +14,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Disable persistent GPU compositing
 debug.sf.disable_hwc=1
 
-# Fixes game grashing (HeartStone)
+# Fixes game grashing (HeartStone) 
 debug.egl.force_msaa=true
 
 # Randomly from stock
@@ -26,4 +26,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # LockScreen Rotation
 PRODUCT_PROPERTY_OVERRIDES += \
-    lockscreen.rot_override=true
+    lockscreen.rot_override=true           ​
+
+    
+# WhiteSpace FTW
+                         
+                         
