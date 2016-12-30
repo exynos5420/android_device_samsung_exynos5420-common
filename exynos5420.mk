@@ -23,17 +23,6 @@ DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 # System properties
 -include $(LOCAL_PATH)/system_prop.mk
 
-# Audio
-PRODUCT_PACKAGES += \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.r_submix.default \
-    tinymix
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/audio/audio_effects.conf:system/etc/audio_effects.conf \
-    $(LOCAL_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf
-
 # Boot animation
 TARGET_BOOTANIMATION_HALF_RES := true
 
@@ -76,16 +65,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     lights.universal5420
 
-# Media profile
-PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
-    $(LOCAL_PATH)/configs/media/media_codecs.xml:system/etc/media_codecs.xml \
-    $(LOCAL_PATH)/configs/media/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
-    $(LOCAL_PATH)/configs/media/media_codecs_performance.xml:system/etc/media_codecs_performance.xml \
-    $(LOCAL_PATH)/configs/media/media_profiles.xml:system/etc/media_profiles.xml
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.consumerir.xml:system/etc/permissions/android.hardware.consumerir.xml \
@@ -121,28 +100,9 @@ PRODUCT_PACKAGES += \
     libpcap \
     tcpdump
 
-# OMX
-PRODUCT_PACKAGES += \
-    libcsc \
-    libOMX.Exynos.WMV.Decoder \
-    libOMX.Exynos.MPEG2.Decoder
-
 # Power
 PRODUCT_PACKAGES += \
     power.universal5420
-
-# Ramdisk
-PRODUCT_PACKAGES += \
-    fstab.universal5420 \
-    init.samsung.rc \
-    init.universal5420.rc \
-    init.universal5420.usb.rc \
-    init.universal5420.wifi.rc
-
-# Radio (needed for audio controls even on wifi-only)
-PRODUCT_PACKAGES += \
-    libsecril-client \
-    libsecril-client-sap
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -188,11 +148,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Deathly Adiutor App
 PRODUCT_PACKAGES += \
     DeathlyAdiutor
-
-# Legacy stagefright media
-PRODUCT_PROPERTY_OVERRIDES += \
-    media.stagefright.legacyencoder=true \
-    media.stagefright.less-secure=true
 
 # call dalvik heap and hwui config
 $(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
