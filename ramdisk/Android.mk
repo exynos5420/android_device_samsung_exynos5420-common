@@ -1,12 +1,21 @@
 LOCAL_PATH := $(call my-dir)
 
+ifeq ($(TARGET_DEVICE),n2awifi)
 include $(CLEAR_VARS)
-LOCAL_MODULE		:= fstab.universal5420
+LOCAL_MODULE		:= fstab.universal5420-n2awifi
 LOCAL_MODULE_TAGS	:= optional eng
 LOCAL_MODULE_CLASS	:= ETC
 LOCAL_SRC_FILES		:= fstab.universal5420
 LOCAL_MODULE_PATH	:= $(TARGET_ROOT_OUT)
 include $(BUILD_PREBUILT)
+else
+include $(CLEAR_VARS)
+LOCAL_MODULE            := fstab.universal5420
+LOCAL_MODULE_TAGS       := optional eng
+LOCAL_MODULE_CLASS      := ETC
+LOCAL_SRC_FILES         := fstab.universal5420
+LOCAL_MODULE_PATH       := $(TARGET_ROOT_OUT)
+endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE		:= init.samsung.rc
