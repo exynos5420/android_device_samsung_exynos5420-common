@@ -127,8 +127,10 @@ PRODUCT_PACKAGES += \
     power.universal5420
 
 # Ramdisk
+ifneq ($(TARGET_DEVICE),n2awifi)
 PRODUCT_PACKAGES += \
     fstab.universal5420 \
+endif    
     init.samsung.rc \
     init.universal5420.rc \
     init.universal5420.usb.rc \
