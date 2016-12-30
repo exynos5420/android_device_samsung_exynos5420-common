@@ -49,10 +49,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.universal5420
 
-# Shims
-PRODUCT_PACKAGES += \
-    libshims_wvm
-
 # Stlport
 PRODUCT_PACKAGES += \
     libstlport
