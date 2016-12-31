@@ -406,6 +406,22 @@ out:
     sysfs_write(IO_IS_BUSY_PATH, on ? "1" : "0");
     ALOGV("power_set_interactive: %d done\n", on);
 }
+ 
+static void samsung_set_feature(struct power_module *module, feature_t feature, int state)
+ {
+     struct samsung_power_module *samsung_pwr = (struct samsung_power_module *) module;
+
+     switch (feature) {
+ #ifdef DT2W_PATH
+         case POWER_FEATURE_DOUBLE_TAP_TO_WAKE:
+             ALOGV("%s: %s double tap to wake", __func__, state ? "enabling" : "disabling");
+             sysfs_write(DT2W_PATH, state > 0 ? "1" : "0");
+             break;
+ #endif
+         default:
+              break;
+      }
+  }
 
 static struct hw_module_methods_t power_module_methods = {
     .open = NULL,
@@ -424,7 +440,8 @@ struct samsung_power_module HAL_MODULE_INFO_SYM = {
         },
 
         .init = samsung_power_init,
-        .setInteractive = samsung_power_set_interactive
+        .setInteractive = samsung_power_set_interactive,
+        .setFeature = samsung_set_feature
     },
 
     .lock = PTHREAD_MUTEX_INITIALIZER,
