@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/exynos5420-common
+COMMON_PATH := device/samsung/exynos5420-common
 
 # Platform
 TARGET_BOARD_PLATFORM := exynos5
@@ -33,7 +33,7 @@ TARGET_CPU_VARIANT := cortex-a15
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_HAVE_SAMSUNG_BLUETOOTH := true
-BOARD_CUSTOM_BT_CONFIG := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
+BOARD_CUSTOM_BT_CONFIG := $(COMMON_PATH)/bluetooth/libbt_vndcfg.txt
 
 # Camera
 BOARD_CAMERA_SNUMINTS := 34
@@ -81,7 +81,7 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 BOARD_USES_HWC_SERVICES := true
 
 # Include path
-TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH += $(COMMON_PATH)/include
 
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
@@ -121,7 +121,7 @@ BOARD_SYSTEMIMAGE_JOURNAL_SIZE := 0
 TARGET_POWERHAL_VARIANT := samsung
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.universal5420
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/ramdisk/fstab.universal5420
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_RECOVERY_SWIPE := true
 TARGET_RECOVERY_DENSITY := mdpi
