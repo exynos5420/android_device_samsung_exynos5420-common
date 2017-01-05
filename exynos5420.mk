@@ -18,7 +18,7 @@ LOCAL_PATH := device/samsung/exynos5420-common
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/exynos5420-common/overlay
 
 # System properties
 -include $(LOCAL_PATH)/system_prop.mk
