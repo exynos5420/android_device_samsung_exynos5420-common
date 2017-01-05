@@ -12,10 +12,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196609
 
 # Disable persistent GPU compositing
-debug.sf.disable_hwc=1
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.disable_hwc=1
 
 # Fixes game grashing (HeartStone)
-debug.egl.force_msaa=true
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.egl.force_msaa=true
 
 # Randomly from stock
 PRODUCT_PROPERTY_OVERRIDES += \
