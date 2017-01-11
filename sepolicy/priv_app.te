@@ -1,0 +1,2 @@
+allow priv_app debugfs:file { write open };
+allow priv_app self:udp_socket ioctl;
