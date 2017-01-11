@@ -22,13 +22,10 @@
 #define LOG_NDEBUG 0
 
 #include <errno.h>
-#include <fcntl.h>
 #include <pthread.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/types.h>
 #include <dlfcn.h>
 
 #include <cutils/log.h>
@@ -38,15 +35,11 @@
 #include <hardware/audio.h>
 #include <hardware/hardware.h>
 
-#include <linux/videodev2.h>
-#include <linux/videodev2_exynos_media.h>
-
 #include <system/audio.h>
 
 #include <tinyalsa/asoundlib.h>
 
 #include <audio_utils/resampler.h>
-#include <audio_utils/echo_reference.h>
 #include <audio_route/audio_route.h>
 
 #include "routing.h"
@@ -60,25 +53,21 @@
 #define PCM_DEVICE 0
 #define PCM_DEVICE_VOICE 1
 #define PCM_DEVICE_SCO 2
-#define PCM_DEVICE_IN 0
+#define PCM_DEVICE_DEEP 3
+#define PCM_DEVICE_PLAYBACK 6
 
 #define MIXER_CARD 0
 
-#define CAPTURE_START_RAMP_MS 8
+#define CAPTURE_START_RAMP_MS 100
 
-/* default sampling for HDMI multichannel output */
-#define HDMI_MULTI_DEFAULT_SAMPLING_RATE 48000
+#define MAX_SUPPORTED_CHANNEL_MASKS 1
 
-/* maximum number of channel mask configurations supported. Currently the primary
- * output only supports 1 (stereo) and the multi channel HDMI output 2 (5.1 and 7.1) */
-#define MAX_SUPPORTED_CHANNEL_MASKS 2
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a[0])))
 
-#define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a[0])))
-
-struct pcm_config pcm_config_fast = {
+struct pcm_config pcm_config = {
     .channels = 2,
     .rate = 48000,
-    .period_size = 240,
+    .period_size = 256,
     .period_count = 2,
     .format = PCM_FORMAT_S16_LE,
 };
@@ -86,7 +75,7 @@ struct pcm_config pcm_config_fast = {
 struct pcm_config pcm_config_deep = {
     .channels = 2,
     .rate = 48000,
-    .period_size = 3840,
+    .period_size = 1024,
     .period_count = 2,
     .format = PCM_FORMAT_S16_LE,
 };
@@ -94,7 +83,7 @@ struct pcm_config pcm_config_deep = {
 struct pcm_config pcm_config_in = {
     .channels = 2,
     .rate = 48000,
-    .period_size = 960,
+    .period_size = 1024,
     .period_count = 2,
     .format = PCM_FORMAT_S16_LE,
 };
@@ -102,7 +91,7 @@ struct pcm_config pcm_config_in = {
 struct pcm_config pcm_config_in_low_latency = {
     .channels = 2,
     .rate = 48000,
-    .period_size = 240,
+    .period_size = 256,
     .period_count = 2,
     .format = PCM_FORMAT_S16_LE,
 };
@@ -117,39 +106,22 @@ struct pcm_config pcm_config_sco = {
 
 struct pcm_config pcm_config_voice = {
     .channels = 2,
-    .rate = 8000,
-    .period_size = 960,
-    .period_count = 2,
-    .format = PCM_FORMAT_S16_LE,
-};
-
-struct pcm_config pcm_config_voice_wide = {
-    .channels = 2,
     .rate = 16000,
-    .period_size = 960,
-    .period_count = 2,
-    .format = PCM_FORMAT_S16_LE,
-};
-
-struct pcm_config pcm_config_hdmi_multi = {
-    .channels = 6, /* changed when the stream is opened */
-    .rate = HDMI_MULTI_DEFAULT_SAMPLING_RATE,
-    .period_size = 1024,
-    .period_count = 4,
+    .period_size = 2048,
+    .period_count = 6,
     .format = PCM_FORMAT_S16_LE,
 };
 
 enum output_type {
     OUTPUT_DEEP_BUF,
     OUTPUT_LOW_LATENCY,
-    OUTPUT_HDMI,
     OUTPUT_TOTAL
 };
 
 struct audio_device {
     struct audio_hw_device hw_device;
 
-    pthread_mutex_t lock;       /* see note below on mutex acquisition order */
+    pthread_mutex_t lock; /* see note below on mutex acquisition order */
     audio_devices_t out_device;
     audio_devices_t in_device;
     bool mic_mute;
@@ -174,8 +146,8 @@ struct audio_device {
     bool tty_mode;
     bool bluetooth_nrec;
     bool wb_amr;
+    bool two_mic_control;
 
-    int hdmi_drv_fd;
     /* RIL */
     struct ril_handle ril;
 
@@ -186,26 +158,16 @@ struct audio_device {
 struct stream_out {
     struct audio_stream_out stream;
 
-    pthread_mutex_t lock;       /* see note below on mutex acquisition order */
+    pthread_mutex_t lock; /* see note below on mutex acquisition order */
     struct pcm *pcm[PCM_TOTAL];
     struct pcm_config config;
     unsigned int pcm_device;
     bool standby; /* true if all PCMs are inactive */
     audio_devices_t device;
-    /* FIXME: when HDMI multichannel output is active, other outputs must be disabled as
-     * HDMI and WM1811 share the same I2S. This means that notifications and other sounds are
-     * silent when watching a 5.1 movie. */
-    bool disabled;
-
-    struct resampler_itfe *resampler;
-    struct echo_reference_itfe *echo_reference;
-    int16_t *buffer;
-    size_t buffer_frames;
 
     audio_channel_mask_t channel_mask;
     /* Array of supported channel mask configurations. +1 so that the last entry is always 0 */
     audio_channel_mask_t supported_channel_masks[MAX_SUPPORTED_CHANNEL_MASKS + 1];
-    bool muted;
     uint64_t written; /* total frames written, not cleared when entering standby */
 
     struct audio_device *dev;
@@ -231,7 +193,7 @@ struct stream_in {
 
     uint16_t ramp_vol;
     uint16_t ramp_step;
-    uint16_t ramp_frames;
+    size_t ramp_frames;
 
     audio_channel_mask_t channel_mask;
     audio_input_flags_t flags;
@@ -253,106 +215,10 @@ const struct string_to_enum out_channels_name_to_enum_table[] = {
     STRING_TO_ENUM(AUDIO_CHANNEL_OUT_7POINT1),
 };
 
-static void do_out_standby(struct stream_out *out);
-
-/* HDMI functions */
-
-/* must be called with hw device mutex locked */
-static int open_hdmi_driver(struct audio_device *adev)
+/* Do we need to enforce wideband audio? */
+static void force_wideband(struct audio_device *adev)
 {
-    if (adev->hdmi_drv_fd < 0) {
-        adev->hdmi_drv_fd = open("/dev/video16", O_RDWR);
-        if (adev->hdmi_drv_fd < 0)
-            ALOGE("%s cannot open video16 - error: %s\n",
-                  __func__, strerror(errno));
-    }
-    return adev->hdmi_drv_fd;
-}
-
-/* must be called with hw device mutex locked */
-static int enable_hdmi_audio(struct audio_device *adev, int enable)
-{
-    int ret;
-    struct v4l2_control ctrl;
-
-    ret = open_hdmi_driver(adev);
-    if (ret < 0) {
-        return ret;
-    }
-
-    ctrl.id = V4L2_CID_TV_ENABLE_HDMI_AUDIO;
-    ctrl.value = !!enable;
-    ret = ioctl(adev->hdmi_drv_fd, VIDIOC_S_CTRL, &ctrl);
-
-    if (ret < 0) {
-        ALOGE("V4L2_CID_TV_ENABLE_HDMI_AUDIO ioctl error (%d)", errno);
-    }
-
-    return ret;
-}
-
-/* must be called with hw device mutex locked
- * Called from adev_open_output_stream with no stream lock,
- * but this is OK because stream is not yet visible
- */
-static int read_hdmi_channel_masks(struct audio_device *adev, struct stream_out *out) {
-    int ret;
-    struct v4l2_control ctrl;
-
-    ret = open_hdmi_driver(adev);
-    if (ret < 0)
-        return ret;
-
-    ctrl.id = V4L2_CID_TV_MAX_AUDIO_CHANNELS;
-    ret = ioctl(adev->hdmi_drv_fd, VIDIOC_G_CTRL, &ctrl);
-    if (ret < 0) {
-        ALOGE("V4L2_CID_TV_MAX_AUDIO_CHANNELS ioctl error (%d)", errno);
-        return ret;
-    }
-
-    ALOGV("%s ioctl %d got %d max channels", __func__, ret, ctrl.value);
-
-    if (ctrl.value != 6 && ctrl.value != 8)
-        return -ENOSYS;
-
-    out->supported_channel_masks[0] = AUDIO_CHANNEL_OUT_5POINT1;
-    if (ctrl.value == 8)
-        out->supported_channel_masks[1] = AUDIO_CHANNEL_OUT_7POINT1;
-
-    return ret;
-}
-
-/* must be called with hw device mutex locked */
-static int set_hdmi_channels(struct audio_device *adev, int channels) {
-    int ret;
-    struct v4l2_control ctrl;
-
-    ret = open_hdmi_driver(adev);
-    if (ret < 0)
-        return ret;
-
-    ctrl.id = V4L2_CID_TV_SET_NUM_CHANNELS;
-    ctrl.value = channels;
-    ret = ioctl(adev->hdmi_drv_fd, VIDIOC_S_CTRL, &ctrl);
-    if (ret < 0)
-        ALOGE("V4L2_CID_TV_SET_NUM_CHANNELS ioctl error (%d)", errno);
-
-    return ret;
-}
-
-/* must be called with hw device outputs list, all out streams, and hw device mutexes locked */
-static void force_non_hdmi_out_standby(struct audio_device *adev)
-{
-    enum output_type type;
-    struct stream_out *out;
-
-    for (type = 0; type < OUTPUT_TOTAL; ++type) {
-        out = adev->outputs[type];
-        if (type == OUTPUT_HDMI || !out)
-            continue;
-        /* This will never recurse more than 2 levels deep. */
-        do_out_standby(out);
-    }
+    adev->wb_amr = 1;
 }
 
 /* Routing functions */
@@ -388,17 +254,17 @@ static int get_output_device_id(audio_devices_t device)
     case AUDIO_DEVICE_OUT_WIRED_HEADPHONE:
         return OUT_DEVICE_HEADPHONES;
     case AUDIO_DEVICE_OUT_BLUETOOTH_SCO:
-    case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
-    case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
         return OUT_DEVICE_BT_SCO;
-    case AUDIO_DEVICE_OUT_AUX_DIGITAL:
-        return OUT_DEVICE_AUX_DIGITAL;
+    case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
+        return OUT_DEVICE_BT_SCO_HEADSET_OUT;
+    case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
+        return OUT_DEVICE_BT_SCO_CARKIT;
     default:
         return OUT_DEVICE_NONE;
     }
 }
 
-static int get_input_source_id(audio_source_t source)
+static int get_input_source_id(audio_source_t source, bool wb_amr)
 {
     switch (source) {
     case AUDIO_SOURCE_DEFAULT:
@@ -430,17 +296,18 @@ static void adev_set_call_audio_path(struct audio_device *adev);
 static void select_devices(struct audio_device *adev)
 {
     int output_device_id = get_output_device_id(adev->out_device);
-    int input_source_id = get_input_source_id(adev->input_source);
+    int input_source_id = get_input_source_id(adev->input_source, adev->wb_amr);
     const char *output_route = NULL;
     const char *input_route = NULL;
+    char output_gain[64] = {0};
+    char input_gain[64] = {0};
     int new_route_id;
 
-    enable_hdmi_audio(adev, adev->out_device & AUDIO_DEVICE_OUT_AUX_DIGITAL);
+    audio_route_reset(adev->ar);
+
     new_route_id = (1 << (input_source_id + OUT_DEVICE_CNT)) + (1 << output_device_id);
-    if (new_route_id == adev->cur_route_id) {
-        ALOGV("%s: Routing hasn't changed, leaving function.", __func__);
+    if (new_route_id == adev->cur_route_id)
         return;
-    }
     adev->cur_route_id = new_route_id;
 
     if (input_source_id != IN_SOURCE_NONE) {
@@ -455,7 +322,7 @@ static void select_devices(struct audio_device *adev)
                 output_device_id = OUT_DEVICE_HEADSET;
                 break;
             case AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET & ~AUDIO_DEVICE_BIT_IN:
-                output_device_id = OUT_DEVICE_BT_SCO;
+                output_device_id = OUT_DEVICE_BT_SCO_HEADSET_OUT;
                 break;
             default:
                 output_device_id = OUT_DEVICE_SPEAKER;
@@ -475,33 +342,52 @@ static void select_devices(struct audio_device *adev)
           output_route ? output_route : "none",
           input_route ? input_route : "none");
 
-    /*
-     * The Arizona Kernel doc describes firmware loading:
-     *
-     * To load a firmware, or to reboot the ADSP with different firmware you
-     * must:
-     * - Disconnect the ADSP from any active audio path so that it will be
-     *   powered-down
-     * - Set the firmware control to the firmware you want to load
-     * - Connect the ADSP to an active audio path so it will be powered-up
-     */
-
-    /* Turn off all devices by resetting to default mixer state */
-    audio_route_reset(adev->ar);
-    audio_route_update_mixer(adev->ar);
-
-    /*
-     * Now apply the new audio routes
-     *
-     * Set the routes, firmware and volumes first and activate the device as the
-     * last step.
-     */
-    if (output_route)
+    if (output_route) {
         audio_route_apply_path(adev->ar, output_route);
-    if (input_route)
+
+        snprintf(output_gain,
+                 sizeof(output_gain),
+                 "gain-%s",
+                 output_route);
+        audio_route_apply_path(adev->ar, output_gain);
+        ALOGV("%s: Applying gain [%s] for route [%s]", __func__,
+              output_gain, output_route);
+    }
+    if (input_route) {
         audio_route_apply_path(adev->ar, input_route);
 
+        snprintf(input_gain,
+                 sizeof(input_gain),
+                 "gain-%s",
+                 input_route);
+        audio_route_apply_path(adev->ar, input_gain);
+        ALOGV("%s: Applying gain [%s] for route [%s]", __func__,
+              input_gain, input_route);
+    }
     audio_route_update_mixer(adev->ar);
+
+    /* FIXME: Turn on two mic control for earpiece and speaker */
+/*    if (input_source_id != IN_SOURCE_NONE) {
+        switch (output_device_id) {
+        case OUT_DEVICE_EARPIECE:
+        case OUT_DEVICE_SPEAKER:
+            adev->two_mic_control = true;
+            break;
+        default:
+            adev->two_mic_control = false;
+            break;
+        }
+    }
+
+    if (adev->two_mic_control) {
+        ALOGV("%s: enabling two mic control", __func__);
+        ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_ON);
+    } else {
+        ALOGV("%s: disabling two mic control", __func__);
+        ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_OFF);
+    }*/
+
+    adev->two_mic_control = false;
 
     adev_set_call_audio_path(adev);
 }
@@ -518,7 +404,7 @@ static void start_bt_sco(struct audio_device *adev)
 
     ALOGV("%s: Opening SCO PCMs", __func__);
 
-    adev->pcm_sco_rx = pcm_open(PCM_CARD, PCM_DEVICE_SCO, PCM_OUT,
+    adev->pcm_sco_rx = pcm_open(PCM_CARD, PCM_DEVICE_SCO, PCM_OUT | PCM_MONOTONIC,
             &pcm_config_sco);
     if (adev->pcm_sco_rx && !pcm_is_ready(adev->pcm_sco_rx)) {
         ALOGE("%s: cannot open PCM SCO RX stream: %s",
@@ -541,8 +427,10 @@ static void start_bt_sco(struct audio_device *adev)
 
 err_sco_tx:
     pcm_close(adev->pcm_sco_tx);
+    adev->pcm_sco_tx = NULL;
 err_sco_rx:
     pcm_close(adev->pcm_sco_rx);
+    adev->pcm_sco_rx = NULL;
 }
 
 /* must be called with hw device mutex locked, OK to hold other mutexes */
@@ -569,7 +457,6 @@ static void end_bt_sco(struct audio_device *adev)
 static int start_voice_call(struct audio_device *adev)
 {
     struct pcm_config *voice_config;
-    bool use_8k_voice = property_get_bool("persist.voice.use.8k", false);
 
     if (adev->pcm_voice_rx || adev->pcm_voice_tx) {
         ALOGW("%s: Voice PCMs already open!\n", __func__);
@@ -578,14 +465,11 @@ static int start_voice_call(struct audio_device *adev)
 
     ALOGV("%s: Opening voice PCMs", __func__);
 
-    if (adev->wb_amr || !use_8k_voice)
-        voice_config = &pcm_config_voice_wide;
-    else
-        voice_config = &pcm_config_voice;
+    voice_config = &pcm_config_voice;
 
     /* Open modem PCM channels */
-    adev->pcm_voice_rx = pcm_open(PCM_CARD, PCM_DEVICE_VOICE,
-            PCM_OUT | PCM_MONOTONIC, voice_config);
+    adev->pcm_voice_rx = pcm_open(PCM_CARD, PCM_DEVICE_VOICE, PCM_OUT | PCM_MONOTONIC,
+            voice_config);
     if (adev->pcm_voice_rx && !pcm_is_ready(adev->pcm_voice_rx)) {
         ALOGE("%s: cannot open PCM voice RX stream: %s",
               __func__, pcm_get_error(adev->pcm_voice_rx));
@@ -603,6 +487,10 @@ static int start_voice_call(struct audio_device *adev)
     pcm_start(adev->pcm_voice_rx);
     pcm_start(adev->pcm_voice_tx);
 
+    /* start SCO stream if needed */
+    if (adev->out_device & AUDIO_DEVICE_OUT_ALL_SCO)
+        start_bt_sco(adev);
+
     return 0;
 
 err_voice_tx:
@@ -616,28 +504,36 @@ err_voice_rx:
 }
 
 /* must be called with hw device mutex locked, OK to hold other mutexes */
-static void end_voice_call(struct audio_device *adev)
+static void stop_voice_call(struct audio_device *adev)
 {
-    ALOGV("%s: Closing voice PCMs", __func__);
+    int status = 0;
+
+    ALOGV("%s: Closing active PCMs", __func__);
 
     if (adev->pcm_voice_rx) {
         pcm_stop(adev->pcm_voice_rx);
         pcm_close(adev->pcm_voice_rx);
         adev->pcm_voice_rx = NULL;
+        status++;
     }
 
     if (adev->pcm_voice_tx) {
         pcm_stop(adev->pcm_voice_tx);
         pcm_close(adev->pcm_voice_tx);
         adev->pcm_voice_tx = NULL;
+        status++;
     }
+
+    /* end SCO stream if needed */
+    if (adev->out_device & AUDIO_DEVICE_OUT_ALL_SCO)
+        end_bt_sco(adev);
+
+    ALOGV("%s: Successfully closed %d active PCMs", __func__, status);
 }
 
 static void adev_set_wb_amr_callback(void *data, int enable)
 {
     struct audio_device *adev = (struct audio_device *)data;
-
-    ALOGV("%s: setting to: %d", __func__, enable);
 
     pthread_mutex_lock(&adev->lock);
     if (adev->wb_amr != enable) {
@@ -645,12 +541,13 @@ static void adev_set_wb_amr_callback(void *data, int enable)
 
         /* reopen the modem PCMs at the new rate */
         if (adev->in_call) {
-#if 0
-            /* TODO: set rate properly */
-            end_voice_call(adev);
+            ALOGV("%s: %s Incall Wide Band support",
+                  __func__,
+                  enable ? "Turn on" : "Turn off");
+
+            stop_voice_call(adev);
             select_devices(adev);
             start_voice_call(adev);
-#endif
         }
     }
     pthread_mutex_unlock(&adev->lock);
@@ -658,7 +555,7 @@ static void adev_set_wb_amr_callback(void *data, int enable)
 
 static void adev_set_call_audio_path(struct audio_device *adev)
 {
-    enum ril_audio_path device_type;
+    enum _AudioPath device_type;
 
     switch(adev->out_device) {
         case AUDIO_DEVICE_OUT_SPEAKER:
@@ -676,11 +573,7 @@ static void adev_set_call_audio_path(struct audio_device *adev)
         case AUDIO_DEVICE_OUT_BLUETOOTH_SCO:
         case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
         case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
-            if (adev->bluetooth_nrec) {
-                device_type = SOUND_AUDIO_PATH_BLUETOOTH;
-            } else {
-                device_type = SOUND_AUDIO_PATH_BLUETOOTH_NO_NR;
-            }
+            device_type = SOUND_AUDIO_PATH_BLUETOOTH;
             break;
         default:
             /* if output device isn't supported, use handset by default */
@@ -689,25 +582,16 @@ static void adev_set_call_audio_path(struct audio_device *adev)
     }
 
     ALOGV("%s: ril_set_call_audio_path(%d)", __func__, device_type);
+
     ril_set_call_audio_path(&adev->ril, device_type);
 }
 
-/* Helper functions */
-
+/* must be called with hw device outputs list, output stream, and hw device mutexes locked */
 static int start_output_stream(struct stream_out *out)
 {
     struct audio_device *adev = out->dev;
 
     ALOGV("%s: starting stream", __func__);
-
-    if (out == adev->outputs[OUTPUT_HDMI]) {
-        force_non_hdmi_out_standby(adev);
-    } else if (adev->outputs[OUTPUT_HDMI] && !adev->outputs[OUTPUT_HDMI]->standby) {
-        out->disabled = true;
-        return 0;
-    }
-
-    out->disabled = false;
 
     if (out->device & (AUDIO_DEVICE_OUT_SPEAKER |
                        AUDIO_DEVICE_OUT_WIRED_HEADSET |
@@ -716,6 +600,7 @@ static int start_output_stream(struct stream_out *out)
                        AUDIO_DEVICE_OUT_ALL_SCO)) {
         out->pcm[PCM_CARD] = pcm_open(PCM_CARD, out->pcm_device,
                                       PCM_OUT | PCM_MONOTONIC, &out->config);
+
         if (out->pcm[PCM_CARD] && !pcm_is_ready(out->pcm[PCM_CARD])) {
             ALOGE("pcm_open(PCM_CARD) failed: %s",
                   pcm_get_error(out->pcm[PCM_CARD]));
@@ -727,6 +612,7 @@ static int start_output_stream(struct stream_out *out)
     if (out->device & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET) {
         out->pcm[PCM_CARD_SPDIF] = pcm_open(PCM_CARD_SPDIF, out->pcm_device,
                                             PCM_OUT | PCM_MONOTONIC, &out->config);
+
         if (out->pcm[PCM_CARD_SPDIF] &&
                 !pcm_is_ready(out->pcm[PCM_CARD_SPDIF])) {
             ALOGE("pcm_open(PCM_CARD_SPDIF) failed: %s",
@@ -742,12 +628,6 @@ static int start_output_stream(struct stream_out *out)
         select_devices(adev);
     }
 
-    if (out->device & AUDIO_DEVICE_OUT_ALL_SCO)
-        start_bt_sco(adev);
-
-    if (out->device & AUDIO_DEVICE_OUT_AUX_DIGITAL) {
-        set_hdmi_channels(adev, out->config.channels);
-    }
     ALOGV("%s: stream out device: %d, actual: %d",
           __func__, out->device, adev->out_device);
 
@@ -759,7 +639,7 @@ static int start_input_stream(struct stream_in *in)
 {
     struct audio_device *adev = in->dev;
 
-    in->pcm = pcm_open(PCM_CARD, PCM_DEVICE_IN, PCM_IN, in->config);
+    in->pcm = pcm_open(PCM_CARD, PCM_DEVICE, PCM_IN, in->config);
 
     if (in->pcm && !pcm_is_ready(in->pcm)) {
         ALOGE("pcm_open() failed: %s", pcm_get_error(in->pcm));
@@ -777,11 +657,9 @@ static int start_input_stream(struct stream_in *in)
         adev->input_source = in->input_source;
         adev->in_device = in->device;
         adev->in_channel_mask = in->channel_mask;
+
         select_devices(adev);
     }
-
-    if (in->device & AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET)
-        start_bt_sco(adev);
 
     /* initialize volume ramp */
     in->ramp_frames = (CAPTURE_START_RAMP_MS * in->requested_rate) / 1000;
@@ -983,6 +861,12 @@ static void do_out_standby(struct stream_out *out)
 
     ALOGV("%s: output standby: %d", __func__, out->standby);
 
+    /* if in-call, dont turn off PCM */
+    if (adev->in_call) {
+        ALOGV("%s: output standby in-call, exiting...", __func__);
+        return;
+    }
+
     if (!out->standby) {
         for (i = 0; i < PCM_TOTAL; i++) {
             if (out->pcm[i]) {
@@ -992,11 +876,13 @@ static void do_out_standby(struct stream_out *out)
         }
         out->standby = true;
 
+#if 0
         if (out == adev->outputs[OUTPUT_HDMI]) {
             /* force standby on low latency output stream so that it can reuse HDMI driver if
-            * necessary when restarted */
+             * necessary when restarted */
             force_non_hdmi_out_standby(adev);
         }
+#endif
 
         /* re-calculate the set of active devices from other streams */
         adev->out_device = output_devices(out);
@@ -1071,34 +957,25 @@ static int out_set_parameters(struct audio_stream *stream, const char *kvpairs)
     lock_all_outputs(adev);
     if (ret >= 0) {
         val = atoi(value);
-        if (((adev->out_device) != val) && (val != 0)) {
+        if ((out->device != val) && (val != 0)) {
             /* Force standby if moving to/from SPDIF or if the output
              * device changes when in SPDIF mode */
             if (((val & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET) ^
-                 (out->device & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET)) ||
-                (out->device & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET)) {
+                 (adev->out_device & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET)) ||
+                (adev->out_device & AUDIO_DEVICE_OUT_DGTL_DOCK_HEADSET)) {
                 do_out_standby(out);
             }
 
-            /* force output standby to stop SCO pcm stream if needed */
+            /* force output standby to start or stop SCO pcm stream if needed */
             if ((val & AUDIO_DEVICE_OUT_ALL_SCO) ^
-                    (out->device & AUDIO_DEVICE_OUT_ALL_SCO)) {
+                (out->device & AUDIO_DEVICE_OUT_ALL_SCO)) {
                 do_out_standby(out);
             }
 
             out->device = val;
-            adev->out_device = val;
+            adev->out_device = output_devices(out) | val;
             select_devices(adev);
 
-            if (!out->standby && (out == adev->outputs[OUTPUT_HDMI] ||
-                !adev->outputs[OUTPUT_HDMI] ||
-                adev->outputs[OUTPUT_HDMI]->standby)) {
-                adev->out_device = output_devices(out) | val;
-                select_devices(adev);
-            }
-            /* start SCO stream if needed */
-            if (val & AUDIO_DEVICE_OUT_ALL_SCO)
-                start_bt_sco(adev);
         }
     }
     unlock_all_outputs(adev, NULL);
@@ -1137,7 +1014,7 @@ static char * out_get_parameters(const struct audio_stream *stream, const char *
             i++;
         }
         str_parms_add_str(reply, AUDIO_PARAMETER_STREAM_SUP_CHANNELS, value);
-        str = strdup(str_parms_to_str(reply));
+        str = str_parms_to_str(reply);
     } else {
         str = strdup(keys);
     }
@@ -1157,20 +1034,6 @@ static uint32_t out_get_latency(const struct audio_stream_out *stream)
 static int out_set_volume(struct audio_stream_out *stream, float left,
                           float right)
 {
-    struct stream_out *out = (struct stream_out *)stream;
-    struct audio_device *adev = out->dev;
-
-    /* The mutex lock is not needed, because the client
-     * is not allowed to close the stream concurrently with this API
-     *  pthread_mutex_lock(&adev->lock_outputs);
-     */
-    bool is_HDMI = out == adev->outputs[OUTPUT_HDMI];
-    /*  pthread_mutex_unlock(&adev->lock_outputs); */
-    if (is_HDMI) {
-        /* only take left channel into account: the API is for stereo anyway */
-        out->muted = (left == 0.0f);
-        return 0;
-    }
     return -ENOSYS;
 }
 
@@ -1205,13 +1068,6 @@ static ssize_t out_write(struct audio_stream_out *stream, const void* buffer,
         unlock_all_outputs(adev, out);
     }
 false_alarm:
-    if (out->disabled) {
-        ret = -EPIPE;
-        goto exit;
-    }
-
-    if (out->muted)
-        memset((void *)buffer, 0, bytes);
 
     /* Write to all active PCMs */
     for (i = 0; i < PCM_TOTAL; i++)
@@ -1336,17 +1192,22 @@ static void do_in_standby(struct stream_in *in)
 {
     struct audio_device *adev = in->dev;
 
+    /* if in-call, dont turn off PCM */
+    if (adev->in_call) {
+        ALOGV("%s: input standby in-call, exiting...", __func__);
+        return;
+    }
+
     if (!in->standby) {
         pcm_close(in->pcm);
         in->pcm = NULL;
 
-        if (in->device & AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET)
-            end_bt_sco(adev);
-
-        in->dev->input_source = AUDIO_SOURCE_DEFAULT;
-        in->dev->in_device = AUDIO_DEVICE_NONE;
-        in->dev->in_channel_mask = 0;
-        select_devices(adev);
+        if (adev->mode != AUDIO_MODE_IN_CALL) {
+            in->dev->input_source = AUDIO_SOURCE_DEFAULT;
+            in->dev->in_device = AUDIO_DEVICE_NONE;
+            in->dev->in_channel_mask = 0;
+            select_devices(adev);
+        }
         in->standby = true;
     }
 }
@@ -1541,30 +1402,13 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
         devices = AUDIO_DEVICE_OUT_SPEAKER;
     out->device = devices;
 
-    if (flags & AUDIO_OUTPUT_FLAG_DIRECT &&
-        devices == AUDIO_DEVICE_OUT_AUX_DIGITAL) {
-        pthread_mutex_lock(&adev->lock);
-        ret = read_hdmi_channel_masks(adev, out);
-        pthread_mutex_unlock(&adev->lock);
-        if (ret != 0)
-            goto err_open;
-        if (config->sample_rate == 0)
-            config->sample_rate = HDMI_MULTI_DEFAULT_SAMPLING_RATE;
-        if (config->channel_mask == 0)
-            config->channel_mask = AUDIO_CHANNEL_OUT_5POINT1;
-        out->channel_mask = config->channel_mask;
-        out->config = pcm_config_hdmi_multi;
-        out->config.rate = config->sample_rate;
-        out->config.channels = audio_channel_count_from_in_mask(config->channel_mask);
-        out->pcm_device = PCM_DEVICE;
-        type = OUTPUT_HDMI;
-    } else if (flags & AUDIO_OUTPUT_FLAG_DEEP_BUFFER) {
+    if (flags & AUDIO_OUTPUT_FLAG_DEEP_BUFFER) {
         out->config = pcm_config_deep;
-        out->pcm_device = PCM_DEVICE;
+        out->pcm_device = PCM_DEVICE_DEEP;
         type = OUTPUT_DEEP_BUF;
     } else {
-        out->config = pcm_config_fast;
-        out->pcm_device = PCM_DEVICE;
+        out->config = pcm_config;
+        out->pcm_device = PCM_DEVICE_PLAYBACK;
         type = OUTPUT_LOW_LATENCY;
     }
 
@@ -1594,6 +1438,8 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     config->sample_rate = out_get_sample_rate(&out->stream.common);
 
     out->standby = true;
+    /* out->muted = false; by calloc() */
+    /* out->written = 0; by calloc() */
 
     pthread_mutex_lock(&adev->lock_outputs);
     if (adev->outputs[type]) {
@@ -1642,31 +1488,6 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
     int ret;
 
     parms = str_parms_create_str(kvpairs);
-#if 0
-    ret = str_parms_get_str(parms, AUDIO_PARAMETER_KEY_TTY_MODE, value, sizeof(value));
-    if (ret >= 0) {
-        int tty_mode;
-
-        if (strcmp(value, AUDIO_PARAMETER_VALUE_TTY_OFF) == 0)
-            tty_mode = TTY_MODE_OFF;
-        else if (strcmp(value, AUDIO_PARAMETER_VALUE_TTY_VCO) == 0)
-            tty_mode = TTY_MODE_VCO;
-        else if (strcmp(value, AUDIO_PARAMETER_VALUE_TTY_HCO) == 0)
-            tty_mode = TTY_MODE_HCO;
-        else if (strcmp(value, AUDIO_PARAMETER_VALUE_TTY_FULL) == 0)
-            tty_mode = TTY_MODE_FULL;
-        else
-            return -EINVAL;
-
-        pthread_mutex_lock(&adev->lock);
-        if (tty_mode != adev->tty_mode) {
-            adev->tty_mode = tty_mode;
-            if (adev->mode == AUDIO_MODE_IN_CALL)
-                select_output_device(adev);
-        }
-        pthread_mutex_unlock(&adev->lock);
-    }
-#endif
 
     ret = str_parms_get_str(parms, AUDIO_PARAMETER_KEY_BT_NREC, value, sizeof(value));
     if (ret >= 0) {
@@ -1676,15 +1497,17 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
             adev->bluetooth_nrec = false;
     }
 
+    /* FIXME: This does not work with LL, see workaround in this HAL */
     ret = str_parms_get_str(parms, "noise_suppression", value, sizeof(value));
     if (ret >= 0) {
-        if (strcmp(value, "on") == 0) {
-            ALOGV("%s: enabling two mic control", __func__);
-            ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_ON);
+        ALOGV("%s: noise_suppression=%s", __func__, value);
+
+        /* value is either off or auto */
+/*        if (strcmp(value, "off") == 0) {
+            adev->two_mic_control = false;
         } else {
-            ALOGV("%s: disabling two mic control", __func__);
-            ril_set_two_mic_control(&adev->ril, AUDIENCE, TWO_MIC_SOLUTION_OFF);
-        }
+            adev->two_mic_control = true;
+        }*/
     }
 
     str_parms_destroy(parms);
@@ -1709,7 +1532,7 @@ static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
     adev->voice_volume = volume;
 
     if (adev->mode == AUDIO_MODE_IN_CALL) {
-        enum ril_sound_type sound_type;
+        enum _SoundType sound_type;
 
         switch (adev->out_device) {
             case AUDIO_DEVICE_OUT_SPEAKER:
@@ -1720,6 +1543,8 @@ static int adev_set_voice_volume(struct audio_hw_device *dev, float volume)
                 sound_type = SOUND_TYPE_HEADSET;
                 break;
             case AUDIO_DEVICE_OUT_BLUETOOTH_SCO:
+            case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_HEADSET:
+            case AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT:
             case AUDIO_DEVICE_OUT_ALL_SCO:
                 sound_type = SOUND_TYPE_BTVOICE;
                 break;
@@ -1751,34 +1576,25 @@ static int adev_set_mode(struct audio_hw_device *dev, audio_mode_t mode)
     if (adev->mode == AUDIO_MODE_IN_CALL) {
         ALOGV("%s: Entering IN_CALL mode", __func__);
         if (!adev->in_call) {
-            adev->in_call = true;
             if (adev->out_device == AUDIO_DEVICE_NONE ||
                 adev->out_device == AUDIO_DEVICE_OUT_SPEAKER) {
-                ALOGV("%s: No device selected, use earpiece as the default",
-                      __func__);
                 adev->out_device = AUDIO_DEVICE_OUT_EARPIECE;
             }
             adev->input_source = AUDIO_SOURCE_VOICE_CALL;
             select_devices(adev);
             start_voice_call(adev);
-            adev_set_call_audio_path(adev);
-            adev_set_voice_volume(&adev->hw_device, adev->voice_volume);
             ril_set_call_clock_sync(&adev->ril, SOUND_CLOCK_START);
+            adev_set_voice_volume(&adev->hw_device, adev->voice_volume);
+            adev->in_call = true;
         }
     } else {
         ALOGV("%s: Leaving IN_CALL mode", __func__);
         if (adev->in_call) {
-            ril_set_call_clock_sync(&adev->ril, SOUND_CLOCK_STOP);
-            end_voice_call(adev);
-            if (adev->out_device & AUDIO_DEVICE_OUT_ALL_SCO)
-                end_bt_sco(adev);
-            adev->input_source = AUDIO_SOURCE_DEFAULT;
-            ALOGV("*** %s: Reset route to out devices=%#x, input src=%#x",
-                  __func__,
-                  adev->out_device,
-                  adev->input_source);
-            select_devices(adev);
             adev->in_call = false;
+            stop_voice_call(adev);
+            ril_set_call_clock_sync(&adev->ril, SOUND_CLOCK_STOP);
+            adev->input_source = AUDIO_SOURCE_DEFAULT;
+            select_devices(adev);
         }
     }
     pthread_mutex_unlock(&adev->lock);
@@ -1789,14 +1605,15 @@ static int adev_set_mode(struct audio_hw_device *dev, audio_mode_t mode)
 static int adev_set_mic_mute(struct audio_hw_device *dev, bool state)
 {
     struct audio_device *adev = (struct audio_device *)dev;
-    enum ril_mute_state ril_state = state ? TX_MUTE : TX_UNMUTE;
+    enum _MuteCondition mute_condition = state ? TX_MUTE : TX_UNMUTE;
 
     ALOGV("%s: set mic mute: %d\n", __func__, state);
 
-    adev->mic_mute = state;
+    if (adev->in_call) {
+        ril_set_mute(&adev->ril, mute_condition);
+    }
 
-    if (adev->in_call)
-        ril_set_mute(&adev->ril, ril_state);
+    adev->mic_mute = state;
 
     return 0;
 }
@@ -1872,6 +1689,7 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
 
     in->buffer = malloc(pcm_config->period_size * pcm_config->channels
                                                * audio_stream_in_frame_size(&in->stream));
+
     if (!in->buffer) {
         ret = -ENOMEM;
         goto err_malloc;
@@ -1934,9 +1752,6 @@ static int adev_close(hw_device_t *device)
 
     audio_route_free(adev->ar);
 
-    if (adev->hdmi_drv_fd >= 0) {
-        close(adev->hdmi_drv_fd);
-    }
     /* RIL */
     ril_close(&adev->ril);
 
@@ -1976,30 +1791,37 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev->hw_device.open_input_stream = adev_open_input_stream;
     adev->hw_device.close_input_stream = adev_close_input_stream;
     adev->hw_device.dump = adev_dump;
-    adev->hw_device.set_master_mute = NULL;
-    adev->hw_device.get_master_mute = NULL;
 
     adev->ar = audio_route_init(MIXER_CARD, NULL);
     adev->input_source = AUDIO_SOURCE_DEFAULT;
     /* adev->cur_route_id initial value is 0 and such that first device
      * selection is always applied by select_devices() */
 
-    adev->hdmi_drv_fd = -1;
-
     adev->mode = AUDIO_MODE_NORMAL;
     adev->voice_volume = 1.0f;
 
     /* RIL */
     ril_open(&adev->ril);
-    /* register callback for wideband AMR setting */
-    ril_register_set_wb_amr_callback(adev_set_wb_amr_callback, (void *)adev);
+
+    char voice_config[PROPERTY_VALUE_MAX];
+
+    if (property_get("audio_hal.force_voice_config", voice_config, "") > 0) {
+        if ((strncmp(voice_config, "narrow", 6)) == 0)
+            adev->wb_amr = false;
+        else if ((strncmp(voice_config, "wide", 4)) == 0)
+            adev->wb_amr = true;
+        ALOGV("%s: Forcing voice config: %s", __func__, voice_config);
+    } else {
+        /* register callback for wideband AMR setting */
+        ril_register_set_wb_amr_callback(adev_set_wb_amr_callback, (void *)adev);
+    }
 
     *device = &adev->hw_device.common;
 
     char value[PROPERTY_VALUE_MAX];
     if (property_get("audio_hal.period_size", value, NULL) > 0) {
-        pcm_config_fast.period_size = atoi(value);
-        pcm_config_in.period_size = pcm_config_fast.period_size;
+        pcm_config.period_size = atoi(value);
+        pcm_config_in.period_size = pcm_config.period_size;
     }
     if (property_get("audio_hal.in_period_size", value, NULL) > 0)
         pcm_config_in.period_size = atoi(value);
@@ -2017,7 +1839,7 @@ struct audio_module HAL_MODULE_INFO_SYM = {
         .module_api_version = AUDIO_MODULE_API_VERSION_0_1,
         .hal_api_version = HARDWARE_HAL_API_VERSION,
         .id = AUDIO_HARDWARE_MODULE_ID,
-        .name = "lt033g audio HW HAL",
+        .name = "Samsung audio HW HAL",
         .author = "The CyanogenMod Project",
         .methods = &hal_module_methods,
     },
