@@ -28,3 +28,6 @@ allow system_server sysfs_writable:lnk_file read;
 
 # FactoryApp
 allow system_server app_efs_file:dir search;
+
+# Unknown
+allow system_server user_profile_data_file:dir { read open };
