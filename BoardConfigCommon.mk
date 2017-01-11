@@ -50,6 +50,7 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos5420
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/mkbootimg.mk
 
 # Charging mode
 BOARD_CHARGER_SHOW_PERCENTAGE := true
