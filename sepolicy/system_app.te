@@ -3,3 +3,7 @@ allow system_app system_data_file:dir { read getattr open };
 allow system_app system_data_file:file { getattr read lock open };
 allow system_app sysfs_mdnie_writable:{ file lnk_file } rw_file_perms;
 allow system_app sysfs_mdnie_writable:dir search;
+
+allow system_app fingerprintd:binder call;
+allow system_app netd:binder call;
+allow system_app netd_service:service_manager find;
