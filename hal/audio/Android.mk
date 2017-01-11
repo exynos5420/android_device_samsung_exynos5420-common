@@ -1,4 +1,4 @@
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ifneq ($(TARGET_DEVICE),ha3g)
-
 LOCAL_PATH := $(call my-dir)
 
 # Audio HAL
@@ -26,19 +24,13 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := audio_hw.c ril_interface.c
 
 LOCAL_C_INCLUDES += \
-	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	external/tinyalsa/include \
 	$(call include-path-for, audio-effects) \
 	$(call include-path-for, audio-utils) \
-	$(call include-path-for, audio-route)
+	$(call include-path-for, audio-route) \
+	hardware/samsung/ril/libsecril-client
 
-LOCAL_ADDITIONAL_DEPENDENCIES += \
-	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
-
-LOCAL_SHARED_LIBRARIES := liblog libcutils libtinyalsa libaudioutils libdl libaudioroute
-
-LOCAL_CFLAGS := -Wno-unused-parameter
+LOCAL_SHARED_LIBRARIES := liblog libcutils libtinyalsa libaudioutils libdl \
+	libaudioroute libsecril-client
 
 include $(BUILD_SHARED_LIBRARY)
-
-endif
