@@ -45,6 +45,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     gps.universal5420
 
+# Samsung Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
