@@ -129,7 +129,6 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
-    fstab.universal5420 \
     init.samsung.rc \
     init.universal5420.rc \
     init.universal5420.usb.rc \
