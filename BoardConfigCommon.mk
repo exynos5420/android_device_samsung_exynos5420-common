@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/exynos5420-common
+COMMON_PATH := device/samsung/exynos5420-common
 
 # Platform
 TARGET_BOARD_PLATFORM := exynos5
@@ -33,7 +33,7 @@ TARGET_CPU_VARIANT := cortex-a15
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_HAVE_SAMSUNG_BLUETOOTH := true
-BOARD_BLUEDROID_VENDOR_CONF := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
+BOARD_BLUEDROID_VENDOR_CONF := $(COMMON_PATH)/bluetooth/libbt_vndcfg.txt
 
 # Camera
 BOARD_CAMERA_SNUMINTS := 34
@@ -48,7 +48,7 @@ COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 TARGET_KERNEL_SOURCE := kernel/samsung/exynos5420
-BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/mkbootimg.mk
+BOARD_CUSTOM_BOOTIMG_MK := $(COMMON_PATH)/mkbootimg.mk
 
 # Charging mode
 BOARD_CHARGER_SHOW_PERCENTAGE := true
@@ -84,7 +84,7 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 BOARD_USES_HWC_SERVICES := true
 
 # Include path
-TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH += $(COMMON_PATH)/include
 
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
