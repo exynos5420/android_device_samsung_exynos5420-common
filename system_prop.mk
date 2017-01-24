@@ -15,10 +15,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.disable_hwc=1
 
-# Fixes game grashing (HeartStone)
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.egl.force_msaa=true
-
 # Randomly from stock
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.gprsclass=10 \
