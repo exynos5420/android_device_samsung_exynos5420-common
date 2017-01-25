@@ -41,10 +41,6 @@ TARGET_BOOTANIMATION_HALF_RES := true
 PRODUCT_PACKAGES += \
     libhwjpeg
 
-# Remove packages that do not work well
-PRODUCT_PACKAGES += \
-    RemovePackages
-
 # GPS
 PRODUCT_PACKAGES += \
     gps.universal5420
