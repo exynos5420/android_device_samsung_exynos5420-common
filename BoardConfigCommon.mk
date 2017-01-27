@@ -66,6 +66,9 @@ TARGET_NO_RADIOIMAGE := true
 # Clang
 USE_CLANG_PLATFORM_BUILD := true
 
+# Cyanogen Hardware
+BOARD_HARDWARE_CLASS := $(COMMON_PATH)/cmhw
+
 # FIMG2D
 BOARD_USES_SKIA_FIMGAPI := true
 
