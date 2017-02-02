@@ -75,8 +75,11 @@ service wpa_supplicant /system/bin/wpa_supplicant -g@android:wpa_wlan0 \
 #    oneshot
 
 service macloader /system/bin/macloader
-    class main
+    class late_start
     oneshot
+
+on property:wlan.driver.status=ok
+start macloader
 
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
