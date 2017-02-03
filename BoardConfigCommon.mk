@@ -77,9 +77,6 @@ BOARD_USE_BGRA_8888_FB := true
 # Exynos display
 BOARD_USES_VIRTUAL_DISPLAY := true
 
-# Cyanogen Hardware
-BOARD_HARDWARE_CLASS := $(COMMON_PATH)/cmhw
-
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
 
