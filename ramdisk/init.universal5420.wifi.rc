@@ -100,8 +100,11 @@ service iprenew_p2p /system/bin/dhcpcd -n
 #    oneshot
 
 service macloader /system/bin/macloader
-    class main
+    class late_start
     oneshot
+
+on property:wlan.driver.status=ok
+    start macloader
 
 on property:init.svc.macloader=stopped
     chown system root /data/.cid.info
