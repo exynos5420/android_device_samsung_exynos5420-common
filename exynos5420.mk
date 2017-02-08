@@ -56,7 +56,8 @@ PRODUCT_PACKAGES += \
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
-    gralloc.exynos5
+    gralloc.exynos5 \
+    libfimg
 
 # IR
 PRODUCT_PACKAGES += \
