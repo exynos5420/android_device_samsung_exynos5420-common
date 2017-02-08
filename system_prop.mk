@@ -6,6 +6,7 @@
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sapa.jack.master=alsa \
     ro.hdcp2.rx=tz
+    persist.bluetooth.disableabsvol=true
 
 # Open GL
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -14,10 +15,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Disable persistent GPU compositing
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.disable_hwc=1
-
-# Fixes game grashing (HeartStone)
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.egl.force_msaa=true
 
 # Randomly from stock
 PRODUCT_PROPERTY_OVERRIDES += \
