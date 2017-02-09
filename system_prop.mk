@@ -5,7 +5,7 @@
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sapa.jack.master=alsa \
-    ro.hdcp2.rx=tz
+    ro.hdcp2.rx=tz \
     persist.bluetooth.disableabsvol=true
 
 # Open GL
