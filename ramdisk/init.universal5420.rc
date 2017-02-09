@@ -339,11 +339,6 @@ on boot
 # Set max gpu clock at 533mhz
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq_gpu 533
 
-# Input Boosters
-    write /sys/module/synaptics_i2c_rmi/parameters/tsp_booster_enabled 0
-    write /sys/module/cypress_touchkey/parameters/touchkey_booster_enabled 0
-    write /sys/module/wacom_i2c_func/parameters/wacom_booster_enabled 0
-
 on fs
     mount_all /fstab.universal5420
 
