@@ -16,3 +16,9 @@ allow init tmpfs:lnk_file create;
 # LD_SHIM_LIBS
 allow init gpsd:process { noatsecure };
 allow init mediaserver:process { noatsecure };
+
+# ??
+allow init debugfs:file write;
+
+# denied { setattr relabelto } name="rear_camfw"
+allow init video_device:file { relabelto setattr };
