@@ -1,3 +1,4 @@
+
 #
 # Common system properties for exynos5420
 #
@@ -10,9 +11,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Open GL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196609
-
-# Disable persistent GPU compositing
-debug.sf.disable_hwc=1
 
 # Randomly from stock
 PRODUCT_PROPERTY_OVERRIDES += \
