@@ -1,0 +1,8 @@
+COMMON_PATH := device/samsung/exynos5420-common
+
+# Recovery
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/ramdisk/fstab.universal5420
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_RECOVERY_SWIPE := true
+TARGET_RECOVERY_DENSITY := mdpi
+BOARD_HAS_LARGE_FILESYSTEM := true
