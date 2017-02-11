@@ -4,6 +4,7 @@
 
 /dev/ttySAC0								u:object_r:hci_attach_dev:s0
 /dev/ttySAC1								u:object_r:gps_device:s0
+/dev/ttySAC[0-9]*            u:object_r:gps_device:s0
 /dev/s5p-smem								u:object_r:secmem_device:s0
 /dev/ump								u:object_r:ump_device:s0
 
@@ -14,7 +15,7 @@
 /dev/media[0-2]*							u:object_r:camera_device:s0
 /dev/m2m1shot_jpeg           u:object_r:camera_device:s0
 
-/dev/video16								u:object_r:video_device:s0
+/dev/video16								u:object_r:audio_device:s0
 /dev/video17								u:object_r:video_device:s0
 /dev/video18								u:object_r:video_device:s0
 /dev/video19								u:object_r:video_device:s0
