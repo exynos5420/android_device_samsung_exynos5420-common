@@ -110,6 +110,7 @@ BOARD_USE_CSC_HW := true
 BOARD_USE_QOS_CTRL := false
 BOARD_USE_S3D_SUPPORT := true
 BOARD_USE_VP8ENC_SUPPORT := true
+TARGET_USES_LEGACY_MEDIA_HAL := true
 
 # Lower filesize by limiting dex-preoptimization
 WITH_DEXPREOPT := true
