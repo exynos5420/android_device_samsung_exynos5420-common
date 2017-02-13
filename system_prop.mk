@@ -25,3 +25,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=1 \
     ro.sec.fle.encryption=true \
     ro.secwvk=220
+
+# Audio Steps
+ro.config.vc_call_vol_steps=60
+ro.config.media_vol_steps=60
