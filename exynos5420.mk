@@ -45,10 +45,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     RemovePackages
 
-# GPS
-PRODUCT_PACKAGES += \
-    gps.universal5420
-
 # Stlport
 PRODUCT_PACKAGES += \
     libstlport
@@ -138,10 +134,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap
-
-# Sensors
-PRODUCT_PACKAGES += \
-    sensors.universal5420
 
 # Wifi
 PRODUCT_COPY_FILES += \
