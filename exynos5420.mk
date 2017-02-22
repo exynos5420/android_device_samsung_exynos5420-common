@@ -41,10 +41,6 @@ TARGET_BOOTANIMATION_HALF_RES := true
 PRODUCT_PACKAGES += \
     libhwjpeg
 
-# GPS
-PRODUCT_PACKAGES += \
-    gps.universal5420
-
 # Samsung Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
@@ -138,10 +134,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap
-
-# Sensors
-PRODUCT_PACKAGES += \
-    sensors.universal5420
 
 # Wifi
 PRODUCT_COPY_FILES += \
