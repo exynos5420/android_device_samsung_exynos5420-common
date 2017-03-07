@@ -83,6 +83,7 @@ TARGET_SPECIFIC_HEADER_PATH += $(COMMON_PATH)/include
 
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/cmhw
+BOARD_HARDWARE_CLASS += $(COMMON_PATH)/cmhw
 
 # Keymaster
 BOARD_USES_TRUST_KEYMASTER := true
