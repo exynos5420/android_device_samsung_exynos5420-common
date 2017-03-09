@@ -1,0 +1,2 @@
+# OTA update
+allow uncrypt emmcblk_device:blk_file write;
