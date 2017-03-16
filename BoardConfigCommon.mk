@@ -152,3 +152,6 @@ WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 
 # Advanced Low Power audio support
 BOARD_USE_ALP_AUDIO := true
+
+# Linker
+LINKER_FORCED_SHIM_LIBS := /system/vendor/lib/egl/libGLES_mali.so|libpopcountsi2.so
