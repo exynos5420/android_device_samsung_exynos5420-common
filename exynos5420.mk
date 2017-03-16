@@ -50,6 +50,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libstlport
 
+# Display
+PRODUCT_PACKAGES += \
+    libpopcountsi2
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
