@@ -38,7 +38,6 @@ BOARD_CUSTOM_BT_CONFIG := $(COMMON_PATH)/bluetooth/libbt_vndcfg.txt
 # Camera
 BOARD_NEEDS_MEMORYHEAPION := true
 BOARD_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
-TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 # Force the screenshot path to CPU consumer
 TARGET_FORCE_SCREENSHOT_CPU_PATH := true
