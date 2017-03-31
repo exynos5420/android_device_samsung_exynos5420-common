@@ -74,6 +74,9 @@ BOARD_USE_BGRA_8888 := true
 # Exynos display
 BOARD_USES_VIRTUAL_DISPLAY := true
 
+# IR Blaster
+IR_HAL_SUFFIX := universal5420
+
 # HWCServices
 BOARD_USES_HWC_SERVICES := true
 
