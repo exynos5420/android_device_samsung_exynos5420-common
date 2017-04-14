@@ -26,3 +26,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # sdcardfs
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sys.sdcardfs=true
+
+# disable HW composition // HACK
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.hwc.force_gpu=true
