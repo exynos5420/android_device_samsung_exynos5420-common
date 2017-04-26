@@ -2,3 +2,4 @@ allow priv_app self:udp_socket ioctl;
 # exfat external sd card
 allow priv_app exfat:file { getattr open read };
 allow priv_app exfat:dir search;
+allow priv_app device:dir { read open };
