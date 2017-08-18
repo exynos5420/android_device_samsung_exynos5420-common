@@ -1,4 +1,5 @@
 # /sys/devices/virtual/camera/*/*_camfw
 # /dev/m2m1shot_jpeg
-allow cameraserver camera_device:file { read open getattr };
-allow cameraserver camera_device:chr_file { read open getattr };
+# BAD
+#allow cameraserver camera_device:file  r_file_perms;;
+#allow cameraserver camera_device:chr_file  r_file_perms;;

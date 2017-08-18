@@ -1,2 +1,2 @@
 # exfat external sd card
-allow untrusted_app exfat:file read;
+allow untrusted_app exfat:file r_file_perms;
