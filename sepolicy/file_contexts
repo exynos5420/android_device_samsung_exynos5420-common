@@ -29,7 +29,16 @@
 /dev/video44								u:object_r:camera_device:s0
 /dev/media2								u:object_r:camera_device:s0
 
-/dev/block/mmcblk0p[0-9]*						u:object_r:emmcblk_device:s0
+/dev/block/mmcblk0								u:object_r:root_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/BOOT		u:object_r:boot_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/RECOVERY	u:object_r:recovery_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/HIDDEN 	u:object_r:preload_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/EFS		u:object_r:modem_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/CACHE		u:object_r:cache_block_device:s0
+/dev/block/platform/dw_mmc\.0/by-name/USERDATA	u:object_r:userdata_block_device:s0
+
+# debugfs
+/sys/kernel/debug/asoc(/.*)?					u:object_r:debugfs_asoc:s0
 
 /efs/bluetooth(/.*)?							u:object_r:bluetooth_data_file:s0
 
