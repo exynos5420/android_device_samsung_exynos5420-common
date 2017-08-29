@@ -15,6 +15,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Open GL
 PRODUCT_PROPERTY_OVERRIDES += \
+	debug.hwui.use_buffer_age=false \
+	debug.sf.disable_hwc=1 \
     ro.opengles.version=196609
 
 # Randomly from stock
