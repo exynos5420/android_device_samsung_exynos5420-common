@@ -5,7 +5,7 @@
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
 	camera.disable_treble=true
-	
+
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sapa.jack.master=alsa \
@@ -30,4 +30,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # sdcardfs
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.sys.sdcardfs=true
+    ro.sys.sdcardfs=false
