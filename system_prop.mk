@@ -2,11 +2,16 @@
 # Common system properties for exynos5420
 #
 
+# Camera
+PRODUCT_PROPERTY_OVERRIDES += \
+	camera.disable_treble=true
+	
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sapa.jack.master=alsa \
     ro.hdcp2.rx=tz \
-    persist.bluetooth.disableabsvol=true
+    persist.bluetooth.disableabsvol=true \
+    persist.media.treble_omx=false
 
 # Open GL
 PRODUCT_PROPERTY_OVERRIDES += \
