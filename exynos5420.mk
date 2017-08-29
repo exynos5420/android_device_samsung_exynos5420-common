@@ -46,10 +46,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungDoze
 
-# Stlport
-PRODUCT_PACKAGES += \
-    libstlport
-
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
