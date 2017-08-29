@@ -50,10 +50,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/manifest.xml:system/vendor/manifest.xml
 
-# HW composer
+# Graphics
 PRODUCT_PACKAGES += \
     libion \
-    gralloc.exynos5
+    gralloc.exynos5 \
+    libgutils
 
 # IR
 PRODUCT_PACKAGES += \
@@ -189,10 +190,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.legacyencoder=true \
     media.stagefright.less-secure=true
-
-# __popcountsi2 method, for the r7p0 egl blob
-PRODUCT_PACKAGES += \
-    libpopcountsi2
 
 # call Samsung LSI board support package
 $(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
