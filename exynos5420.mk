@@ -46,6 +46,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SamsungDoze
 
+# HIDL
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/manifest.xml:system/vendor/manifest.xml
+
 # HW composer
 PRODUCT_PACKAGES += \
     libion \
