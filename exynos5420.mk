@@ -44,10 +44,6 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
-# Samsung Doze
-PRODUCT_PACKAGES += \
-    SamsungDoze
-
 # HIDL
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/manifest.xml:system/vendor/manifest.xml
