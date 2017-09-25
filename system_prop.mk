@@ -32,7 +32,3 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # sdcardfs
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sys.sdcardfs=true
-
-# disable consumer ir while it's broken
-PRODUCT_PROPERTY_OVERRIDES += \
-	config.disable_consumerir=true
