@@ -44,10 +44,6 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
-# HIDL
-PRODUCT_COPY_FILES += \
-    $(COMMON_PATH)/manifest.xml:system/vendor/manifest.xml
-
 # Graphics
 PRODUCT_PACKAGES += \
     libion \
