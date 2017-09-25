@@ -80,10 +80,3 @@ service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
 #    class main
 #    disabled
 #    oneshot
-
-service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
-    class late_start
-    user root
-    group root
-    oneshot
-    disabled
