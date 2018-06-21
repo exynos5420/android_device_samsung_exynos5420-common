@@ -86,7 +86,7 @@ Only the three quirks included above are recognized at this point:
     </Settings>
 
     <Decoders>
-        <MediaCodec name="OMX.Exynos.AVC.Decoder" type="video/avc" >
+<!--        <MediaCodec name="OMX.Exynos.AVC.Decoder" type="video/avc" >
             <Quirk name="requires-allocate-on-input-ports" />
             <Quirk name="requires-allocate-on-output-ports" />
             <Limit name="size" min="32x32" max="2560x1600" />
@@ -97,6 +97,7 @@ Only the three quirks included above are recognized at this point:
             <Limit name="concurrent-instances" max="16"/>
             <Feature name="adaptive-playback" />
         </MediaCodec>
+-->
         <MediaCodec name="OMX.Exynos.MPEG4.Decoder" type="video/mp4v-es" >
             <Quirk name="requires-allocate-on-input-ports" />
             <Quirk name="requires-allocate-on-output-ports" />
