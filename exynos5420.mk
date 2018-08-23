@@ -44,10 +44,6 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
-#GPS
-PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.0-impl
-
 # Graphics
 PRODUCT_PACKAGES += \
     libion \
