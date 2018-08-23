@@ -40,6 +40,10 @@ BOARD_NEEDS_MEMORYHEAPION := true
 BOARD_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
+# Camera Shim
+TARGET_LD_SHIM_LIBS += \
+        /system/lib/libexynoscamera.so|libshim_camera.so
+
 # Force the screenshot path to CPU consumer
 TARGET_FORCE_SCREENSHOT_CPU_PATH := true
 

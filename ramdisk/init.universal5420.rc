@@ -18,6 +18,13 @@ on post-fs
     symlink /sdcard /storage/sdcard0
     symlink /sdcard1 /storage/sdcard1
 
+# create camera directory
+    mkdir /data/vendor/camera 0770 camera camera
+
+    # camera server uses files under this directory via a kernel module for the FIMC, trying chmod since chown not successful
+    chown cameraserver audio /data/misc/media
+    chmod 0776 /data/misc/media
+
 on early-init
     write /sys/block/mmcblk0/queue/read_ahead_kb 512
     write /sys/block/mmcblk1/queue/read_ahead_kb 512
@@ -438,9 +445,6 @@ on fs
     chown system radio /sys/class/audio/earjack/select_jack
     chown system radio /sys/class/audio/earjack/key_state
     chown system radio /sys/class/audio/earjack/state
-
-# create camera directory
-    mkdir /data/camera 0770 media system
 
 # GPS
     chown root system /dev/ttySAC1
