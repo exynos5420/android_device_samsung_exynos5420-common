@@ -42,7 +42,9 @@ TARGET_BOOTANIMATION_HALF_RES := true
 # Camera
 PRODUCT_PACKAGES += \
     camera.device@1.0-impl.exynos5420 \
+    android.hardware.camera.provider@2.4-impl.exynos5420 \
     camera.universal5420 \
+    libshim_camera \
     libhwjpeg
 
 #GPS
@@ -91,6 +93,7 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     $(COMMON_PATH)/configs/media/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
     $(COMMON_PATH)/configs/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml
+    $(COMMON_PATH)/configs/media/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
 # Permissions
 PRODUCT_COPY_FILES += \
