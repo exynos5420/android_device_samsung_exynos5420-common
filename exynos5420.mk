@@ -42,6 +42,8 @@ TARGET_BOOTANIMATION_HALF_RES := true
 # Camera
 PRODUCT_PACKAGES += \
     camera.universal5420 \
+    android.hardware.camera.provider@2.4-impl-legacy \
+    camera.device@1.0-impl-legacy \
     libhwjpeg
 
 #GPS
