@@ -440,7 +440,11 @@ on fs
     chown system radio /sys/class/audio/earjack/state
 
 # create camera directory
-    mkdir /data/camera 0770 media system
+    mkdir /data/vendor/camera 0770 camera camera
+
+    # camera server uses files under this directory via a kernel module for the FIMC, trying chmod since chown not successful
+    chown cameraserver audio /data/misc/media
+    chmod 0776 /data/misc/media
 
 # GPS
     chown root system /dev/ttySAC1
