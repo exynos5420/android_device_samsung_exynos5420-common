@@ -10,3 +10,4 @@ type sysfs_multipdp_writable, fs_type, sysfs_type, mlstrustedobject;
 type sysfs_usb_power_writable, fs_type, sysfs_type, mlstrustedobject;
 type preloader_block_device, dev_type;
 type modem_block_device, dev_type;
+type log_device, dev_type, mlstrustedobject;
