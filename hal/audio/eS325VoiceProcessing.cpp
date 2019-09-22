@@ -252,8 +252,8 @@ int aec_get_parameter(adnc_pfx_effect_t     *effect,
                     size_t            *pValueSize,
                     void              *pValue)
 {
-    int status = 0;
-    uint32_t param = *(uint32_t *)pParam;
+    int status __unused = 0;
+    uint32_t param __unused = *(uint32_t *)pParam;
 
     if (*pValueSize < sizeof(uint32_t)) {
         return -EINVAL;
@@ -276,8 +276,8 @@ int aec_get_parameter(adnc_pfx_effect_t     *effect,
 int aec_set_parameter (adnc_pfx_effect_t *effect, void *pParam, void *pValue)
 {
     int status = 0;
-    uint32_t param = *(uint32_t *)pParam;
-    uint32_t value = *(uint32_t *)pValue;
+    uint32_t param __unused = *(uint32_t *)pParam;
+    uint32_t value __unused = *(uint32_t *)pValue;
 
     /* NOT SUPPORTED
     switch (param) {
@@ -745,8 +745,8 @@ int AdncVoiceProcessingFx_Command(effect_handle_t  self,
                             void                *pReplyData)
 {
     adnc_pfx_effect_t * effect = (adnc_pfx_effect_t *) self;
-    int retsize;
-    int status;
+    int retsize __unused;
+    int status __unused;
 
     if (effect == NULL){
         return -EINVAL;
@@ -999,7 +999,7 @@ exit:
 
 int adnc_release(effect_handle_t interface)
 {
-    int i, status = 0;
+    int i __unused, status = 0;
     ALOGV("adnc_release %p", interface);
 
     // the effect handle comes from the effect framework, ok to cast
@@ -1327,9 +1327,9 @@ int Adnc_ApplySettingsForHandleInt_l(audio_io_handle_t handle)
 {
     ALOGV(" Adnc_ApplySettingsForHandleInt_l(handle=%d)", handle);
     // indicates whether this effect bundle currently has a session context for this IO handle
-    bool hasSession = false;
+    bool hasSession __unused = false;
     int status = 0;
-    int i;
+    int i __unused;
 
     if (sAdncBundleInitStatus != 0) {
         // This assumes that the default config of the eS325 after setting a preset
