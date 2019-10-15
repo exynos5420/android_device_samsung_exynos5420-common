@@ -533,10 +533,10 @@ on charger
     domainname localdomain
 
 # LPM
-service charger /sbin/healthd -c
+service charger /charger
     class charger
     critical
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
 
 # service for TZPR provisioning version check app
 #service scranton_RD /system/bin/scranton_RD
