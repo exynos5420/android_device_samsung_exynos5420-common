@@ -41,7 +41,7 @@
 /efs/nv_data.bin(.*)							u:object_r:bin_nv_data_efs_file:s0
 
 # camera
-/sys/devices/virtual/camera/.*/.*_camfw					u:object_r:camera_device:s0
+#/sys/devices/virtual/camera/.*/.*_camfw					u:object_r:camera_device:s0
 
 /dev/umts.*								u:object_r:mif_device:s0
 /dev/ehci_power								u:object_r:mif_device:s0
@@ -55,7 +55,7 @@
 
 /data/camera(/.*)?							u:object_r:camera_data_file:s0
 
-/data/app/tlcd_sock							u:object_r:drmserver_socket:s0
+#/data/app/tlcd_sock							u:object_r:drmserver_socket:s0
 
 /data/.wifiver.info							u:object_r:wifi_data_file:s0
 
