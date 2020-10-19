@@ -10,6 +10,8 @@ on post-fs-data
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     
     mkdir /data/vendor/wifi 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa 0770 wifi wifi
+    mkdir /data/vendor/wifi/wpa/sockets 0770 wifi wifi
     mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
     mkdir /data/misc/dhcp 0775 dhcp dhcp
 
@@ -52,7 +54,7 @@ service wifiloader /system/bin/wifiloader
 
 service wpa_supplicant /vendor/bin/hw/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
-    -I/system/etc/wifi/wpa_supplicant_overlay.conf -O/data/misc/wifi/sockets -N \
+    -I/system/etc/wifi/wpa_supplicant_overlay.conf -O/data/vendor/wifi/wpa/sockets -N \
     -ip2p0 -Dnl80211 -c/data/misc/wifi/p2p_supplicant.conf \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf \
     -puse_p2p_group_interface=1 -puse_multi_chan_concurrent=1 \
