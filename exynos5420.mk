@@ -169,7 +169,9 @@ PRODUCT_PACKAGES += \
     hostapd_default.conf \
     libwpa_client \
     wificond \
-    wpa_supplicant
+    wifilogd \
+    wpa_supplicant \
+    wpa_supplicant.conf
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
