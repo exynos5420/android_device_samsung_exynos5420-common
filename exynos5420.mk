@@ -165,11 +165,14 @@ PRODUCT_PACKAGES += \
 # WiFi HAL
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
+    android.hardware.wifi@1.0 \
+    android.hardware.wifi@1.0-impl
     hostapd \
     hostapd_default.conf \
     libwpa_client \
     wificond \
     wifilogd \
+    wlutil \
     wpa_supplicant \
     wpa_supplicant.conf
 
