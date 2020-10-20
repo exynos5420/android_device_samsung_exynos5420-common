@@ -159,5 +159,3 @@ WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 # Linker
 TARGET_LD_SHIM_LIBS += /system/vendor/lib/egl/libGLES_mali.so|libgutils.so
 
-# Seccomp
-BOARD_SECCOMP_POLICY := device/samsung/exynos5420-common/seccomp
