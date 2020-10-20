@@ -140,6 +140,8 @@ on boot
     chown root radio /proc/cmdline
 #    chmod 0666 /dev/pvrsrvkm
 
+    setprop debug.hwc.winupdate 0
+
 # Permissions for gpio_keys
     chown radio system /sys/class/sec/sec_key/wakeup_keys
     write /sys/class/sec/sec_key/wakeup_keys 116,172
