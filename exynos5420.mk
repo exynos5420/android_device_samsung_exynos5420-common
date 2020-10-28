@@ -41,6 +41,8 @@ TARGET_BOOTANIMATION_HALF_RES := true
 
 # Camera
 PRODUCT_PACKAGES += \
+    android.hardware.camera.provider@2.4-impl.exynos5420 \
+    camera.device@1.0-impl.exynos5420 \
     camera.universal5420 \
     libhwjpeg
 
@@ -74,13 +76,12 @@ PRODUCT_COPY_FILES += \
 
 # Keymaster
 PRODUCT_PACKAGES += \
-    keystore.exynos5 \
-    android.hardware.keymaster@3.0-impl \
-    android.hardware.keymaster@3.0-service
+    android.hardware.keymaster@3.0-impl
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.samsung
+    lights.universal5420 \
+    android.hardware.light@2.0-impl
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -124,14 +125,33 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.freeform_window_management.xml
 
-# Power
-PRODUCT_PACKAGES += \
-    android.hardware.power@1.0-service.exynos
-
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     libbt-vendor
+
+# MobiCore setup
+PRODUCT_PACKAGES += \
+    libMcClient \
+    libMcRegistry \
+    libPaApi \
+    libgdmcprov
+
+# Network tools
+PRODUCT_PACKAGES += \
+    libpcap \
+    tcpdump
+
+# OMX
+PRODUCT_PACKAGES += \
+    libcsc \
+    libOMX.Exynos.WMV.Decoder \
+    libOMX.Exynos.MPEG2.Decoder
+
+# Power
+PRODUCT_PACKAGES += \
+    power.universal5420 \
+    android.hardware.power@1.0-impl
 
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -154,32 +174,25 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl
 
-# Touch features
-PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samsung
-
-# Trust HAL
-PRODUCT_PACKAGES += \
-    vendor.lineage.trust@1.0-service
-
 # Vibrator HAL
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service
+    android.hardware.vibrator@1.0-impl 
 
 # USB HAL
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
+	android.hardware.usb@1.0-service
 
 # WiFi HAL
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
+    android.hardware.wifi@1.0 \
+    android.hardware.wifi@1.0-impl \
     hostapd \
+    hostapd_default.conf \
     libwpa_client \
     wificond \
     wifilogd \
     wlutil \
-    wifiloader \
     wpa_supplicant \
     wpa_supplicant.conf
 
@@ -190,6 +203,10 @@ PRODUCT_COPY_FILES += \
 # IO Scheduler
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.io.scheduler=bfq
+
+PRODUCT_PACKAGES += \
+    libnetcmdiface \
+    wifiloader
 
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -206,7 +223,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Enable multi-window by default
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.debug.multi_window=true
-	
+
 # Legacy stagefright media
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.legacyencoder=true \
