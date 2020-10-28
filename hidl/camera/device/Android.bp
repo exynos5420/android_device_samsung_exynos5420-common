@@ -22,12 +22,17 @@ cc_library_shared {
         "liblog",
         "libhardware",
         "libcamera_metadata",
+        "libbinder",
     ],
     static_libs: [
         "android.hardware.camera.common@1.0-helper"
     ],
     include_dirs: [
-        "frameworks/native/include/media/openmax"
+        "frameworks/native/include/media/openmax",
+        "frameworks/native/libs/binder/include",
     ],
-    export_include_dirs: ["."]
+    export_include_dirs: ["."],
+    header_libs: [
+        "libbinder_headers",
+    ],
 }
