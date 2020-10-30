@@ -133,12 +133,6 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     libbt-vendor
 
-# OMX
-PRODUCT_PACKAGES += \
-    libcsc \
-    libOMX.Exynos.WMV.Decoder \
-    libOMX.Exynos.MPEG2.Decoder
-
 # Ramdisk
 PRODUCT_PACKAGES += \
     init.samsung.rc \
