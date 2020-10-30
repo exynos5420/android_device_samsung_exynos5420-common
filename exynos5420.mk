@@ -44,6 +44,11 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
+# First Stage Mount
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/ramdisk/fstab_fst.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
+    $(COMMON_PATH)/ramdisk/fstab_fst.universal5420:$(TARGET_COPY_OUT_VENDOR)/fstab.universal5420
+
 #GPS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl
