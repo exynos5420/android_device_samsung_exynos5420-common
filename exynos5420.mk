@@ -186,14 +186,12 @@ PRODUCT_PACKAGES += \
 # WiFi HAL
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
-    android.hardware.wifi@1.0 \
-    android.hardware.wifi@1.0-impl \
     hostapd \
-    hostapd_default.conf \
     libwpa_client \
     wificond \
     wifilogd \
     wlutil \
+    wifiloader \
     wpa_supplicant \
     wpa_supplicant.conf
 
@@ -204,10 +202,6 @@ PRODUCT_COPY_FILES += \
 # IO Scheduler
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.io.scheduler=bfq
-
-PRODUCT_PACKAGES += \
-    libnetcmdiface \
-    wifiloader
 
 # GPU producer to CPU consumer not supported
 PRODUCT_PROPERTY_OVERRIDES += \
