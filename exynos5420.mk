@@ -115,6 +115,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.freeform_window_management.xml
 
+# Power
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.0-service.exynos
+
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
@@ -137,11 +141,6 @@ PRODUCT_PACKAGES += \
     libcsc \
     libOMX.Exynos.WMV.Decoder \
     libOMX.Exynos.MPEG2.Decoder
-
-# Power
-PRODUCT_PACKAGES += \
-    power.universal5420 \
-    android.hardware.power@1.0-impl
 
 # Ramdisk
 PRODUCT_PACKAGES += \
