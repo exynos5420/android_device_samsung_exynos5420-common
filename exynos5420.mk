@@ -56,10 +56,11 @@ PRODUCT_PACKAGES += \
     libshim_camera \
     libhwjpeg
 
-# Configstore
+# DRM
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.1-impl \
-    android.hardware.configstore@1.1-service
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.1-service.clearkey \
+    android.hardware.drm@1.0-service
 
 # First Stage Mount
 PRODUCT_COPY_FILES += \
