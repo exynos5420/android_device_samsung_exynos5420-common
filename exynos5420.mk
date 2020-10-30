@@ -49,6 +49,11 @@ PRODUCT_PACKAGES += \
     android.hardware.configstore@1.0-impl \
     android.hardware.configstore@1.0-service
 
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.0-service
+
 # First Stage Mount
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/ramdisk/fstab_fst.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
