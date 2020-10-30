@@ -134,11 +134,6 @@ PRODUCT_PACKAGES += \
     libPaApi \
     libgdmcprov
 
-# Network tools
-PRODUCT_PACKAGES += \
-    libpcap \
-    tcpdump
-
 # OMX
 PRODUCT_PACKAGES += \
     libcsc \
