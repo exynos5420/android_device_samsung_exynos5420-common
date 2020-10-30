@@ -159,11 +159,6 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
     libbt-vendor
 
-# Network tools
-PRODUCT_PACKAGES += \
-    libpcap \
-    tcpdump
-
 # OMX
 PRODUCT_PACKAGES += \
     libcsc \
