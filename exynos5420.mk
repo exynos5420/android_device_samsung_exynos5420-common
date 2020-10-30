@@ -49,6 +49,12 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
+# DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.1-service.clearkey \
+    android.hardware.drm@1.0-service
+
 # First Stage Mount
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/ramdisk/fstab.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
