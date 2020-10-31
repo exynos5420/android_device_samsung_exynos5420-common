@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6c2b94fe_cb5c35ac",
+        "filename": "camera/ExynosCameraAutoTimer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000110
+      },
+      "writtenOn": "2020-10-31T01:02:50Z",
+      "side": 0,
+      "message": "Will have to double check, but I think the DurationTimer class can be removed entirely and this file. It seemed kinda pointless when it was used in the camera interface related code",
+      "revId": "49c4ecdc39ab4d4f814db6566324ebf20078c27d",
+      "serverId": "c6d92919-bfe7-411c-9f64-004a8163e0f0",
+      "unresolved": false
+    }
+  ]
+}
