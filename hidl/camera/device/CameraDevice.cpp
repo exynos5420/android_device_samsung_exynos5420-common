@@ -427,7 +427,6 @@ camera_memory_t* CameraDevice::sGetMemory(int fd, size_t buf_size, uint_t num_bu
     hidl_handle hidlHandle = mem->mHidlHandle;
     MemoryId memId = device->mDeviceCallback->registerMemory(hidlHandle, buf_size, num_bufs);
     mem->handle.mId = memId;
-    ALOGV("%s mem id: %d", __FUNCTION__, memId);
 #endif
 
     Mutex::Autolock _l(device->mMemoryMapLock);
