@@ -162,5 +162,5 @@ WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wifi/bcmdhd_apsta.bin"
 
 # Linker
-TARGET_LD_SHIM_LIBS += /system/vendor/lib/egl/libGLES_mali.so|libgutils.so
+TARGET_LD_SHIM_LIBS += /vendor/lib/egl/libGLES_mali.so|libgutils.so
 
