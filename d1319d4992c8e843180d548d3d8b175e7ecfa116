@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b19937a0_b451a5fa",
+        "filename": "exynos5420.mk",
+        "patchSetId": 10
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000110
+      },
+      "writtenOn": "2020-12-20T23:08:32Z",
+      "side": 1,
+      "message": "Is this meant to be in here ?",
+      "revId": "d1319d4992c8e843180d548d3d8b175e7ecfa116",
+      "serverId": "c6d92919-bfe7-411c-9f64-004a8163e0f0",
+      "unresolved": true
+    }
+  ]
+}

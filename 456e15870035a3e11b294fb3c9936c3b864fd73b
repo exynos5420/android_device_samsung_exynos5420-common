@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a7a4b68e_35c3b9a1",
+        "filename": "libshim_camera/Android.mk",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000110
+      },
+      "writtenOn": "2020-12-20T23:08:32Z",
+      "side": 1,
+      "message": "These paths include the \"slsi-cm\" directory which is no longer for use",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 0
+      },
+      "revId": "456e15870035a3e11b294fb3c9936c3b864fd73b",
+      "serverId": "c6d92919-bfe7-411c-9f64-004a8163e0f0",
+      "unresolved": true
+    }
+  ]
+}
