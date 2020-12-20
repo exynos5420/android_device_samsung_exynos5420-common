@@ -384,7 +384,7 @@ typedef struct {
     /** Signal to noise ratio. */
     float   snr;
     /** Elevation of SV in degrees. */
-    float   elevation;
+    loat   elevation;
     /** Azimuth of SV in degrees. */
     float   azimuth;
     /** SAMSUNG */
