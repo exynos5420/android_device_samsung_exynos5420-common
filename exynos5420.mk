@@ -178,8 +178,8 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl \
-    sensors.exynos5
+    android.hardware.sensors@1.0-impl.exynos5420 \
+    android.hardware.sensors@1.0-service.exynos5420
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/sensors/_hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/_hals.conf
