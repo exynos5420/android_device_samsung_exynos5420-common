@@ -85,6 +85,10 @@ TARGET_SPECIFIC_HEADER_PATH += $(COMMON_PATH)/include
 # Hardware
 BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw
 
+# HIDL
+DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
+
 # Keymaster
 BOARD_USES_TRUST_KEYMASTER := true
 
