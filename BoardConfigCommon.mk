@@ -84,6 +84,9 @@ BOARD_HARDWARE_CLASS += hardware/samsung/lineagehw
 # Keymaster
 BOARD_USES_TRUST_KEYMASTER := true
 
+# Lineage Hardware
+JAVA_SOURCE_OVERLAYS := org.lineageos.hardware|$(COMMON_PATH)/lineagehw|**/*.java
+
 # Media
 BOARD_USE_SAMSUNG_CAMERAFORMAT_NV21 := true
 BOARD_GLOBAL_CFLAGS += -DWIDEVINE_PLUGIN_PRE_NOTIFY_ERROR
