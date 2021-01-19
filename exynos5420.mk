@@ -85,7 +85,8 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.samsung
+    lights.universal5420 \
+    android.hardware.light@2.0-impl
 
 # Media profile
 PRODUCT_COPY_FILES += \
