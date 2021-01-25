@@ -29,12 +29,17 @@ PRODUCT_PACKAGES += \
     audio.usb.default \
     audio.r_submix.default \
     tinymix \
-    android.hardware.audio@2.0-impl \
-    android.hardware.audio.effect@2.0-impl
+    android.hardware.audio@4.0-service \
+    android.hardware.audio.effect@4.0-service
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/audio/audio_effects.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.conf \
     $(COMMON_PATH)/configs/audio/audio_policy.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy.conf
+
+# Bluetooth HAL
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl \
+    libbt-vendor
 
 # Boot animation
 TARGET_BOOTANIMATION_HALF_RES := true
@@ -47,6 +52,20 @@ PRODUCT_PACKAGES += \
     libshim_camera \
     libhwjpeg
 
+# Configstore
+PRODUCT_PACKAGES += \
+    android.hardware.configstore@1.1-service
+
+# DRM - leaving in both until DRM is figured out
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl \
+    android.hardware.drm@1.0-service
+
+# Fingerprint - taken from 14.1 repo
+#PRODUCT_PACKAGES += \
+#    android.hardware.biometrics.fingerprint@2.1-service \
+#    fingerprint.universal5420
+
 # First Stage Mount
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/ramdisk/fstab.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
@@ -54,7 +73,7 @@ PRODUCT_COPY_FILES += \
 
 #GPS
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.0-impl
+    android.hardware.gnss@1.1-impl
 
 # Graphics
 PRODUCT_PACKAGES += \
@@ -68,6 +87,11 @@ PRODUCT_PACKAGES += \
     libion \
     libfimg \
     libgutils
+
+# Health HAL
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.0-impl \
+    android.hardware.health@2.0-service
 
 # IR
 PRODUCT_PACKAGES += \
@@ -83,11 +107,15 @@ PRODUCT_COPY_FILES += \
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl
+    keystore.exynos5 \
 
 # Lights
 PRODUCT_PACKAGES += \
-    lights.universal5420 \
-    android.hardware.light@2.0-impl
+    android.hardware.light@2.0-service.samsung
+
+# LiveDisplay
+PRODUCT_PACKAGES += \
+    vendor.lineage.livedisplay@2.0-service.samsung-exynos
 
 # Media profile
 PRODUCT_COPY_FILES += \
@@ -96,8 +124,7 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml \
     $(COMMON_PATH)/configs/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     $(COMMON_PATH)/configs/media/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
-    $(COMMON_PATH)/configs/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml \
-    $(COMMON_PATH)/configs/media/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
+    $(COMMON_PATH)/configs/media/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles.xml
 
 # Memory
 PRODUCT_PACKAGES += \
@@ -105,9 +132,21 @@ PRODUCT_PACKAGES += \
 
 # MobiCore setup
 PRODUCT_PACKAGES += \
-    mcDriverDaemon \
     libMcClient \
-    libMcRegistry
+    libMcRegistry \
+    libPaApi \
+    libgdmcprov
+
+# Network tools
+PRODUCT_PACKAGES += \
+    libpcap \
+    tcpdump
+
+# OMX - taken from 14.1 repo
+PRODUCT_PACKAGES += \
+    libcsc \
+    libOMX.Exynos.WMV.Decoder \
+    libOMX.Exynos.MPEG2.Decoder
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -132,30 +171,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.hardware.bluetooth.xml \
     frameworks/native/data/etc/android.software.freeform_window_management.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/android.software.freeform_window_management.xml
 
-# Bluetooth HAL
-PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.0-impl \
-    libbt-vendor
-
-# MobiCore setup
-PRODUCT_PACKAGES += \
-    libMcClient \
-    libMcRegistry \
-    libPaApi \
-    libgdmcprov
-
-# Network tools
-PRODUCT_PACKAGES += \
-    libpcap \
-    tcpdump
-
-# OMX
-PRODUCT_PACKAGES += \
-    libcsc \
-    libOMX.Exynos.WMV.Decoder \
-    libOMX.Exynos.MPEG2.Decoder
-
 # Power
+#     android.hardware.power@1.0-service.exynos
 PRODUCT_PACKAGES += \
     power.universal5420 \
     android.hardware.power@1.0-impl
@@ -164,6 +181,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.samsung.rc \
     init.universal5420.rc \
+    init.recovery.universal5420.rc \
     init.universal5420.usb.rc \
     init.universal5420.wifi.rc
 
@@ -171,6 +189,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap
+
+# Samsung Doze - comment out temp until testing
+#PRODUCT_PACKAGES += \
+#    SamsungDoze
 
 # Seccomp Filters
 PRODUCT_COPY_FILES += \
@@ -185,19 +207,31 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/sensors/_hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/_hals.conf
 
+# THERMAL
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.1-impl
+
+# Touch features
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch@1.0-service.samsung
+
+# Trust HAL
+PRODUCT_PACKAGES += \
+    vendor.lineage.trust@1.0-service
+
 # Vibrator HAL
 PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl 
+    android.hardware.vibrator@1.0-impl
 
 # USB HAL
 PRODUCT_PACKAGES += \
-	android.hardware.usb@1.0-service
+    android.hardware.usb@1.0-service.basic \
+    android.hardware.usb.gadget@1.0-impl
 
 # WiFi HAL
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
-    android.hardware.wifi@1.0 \
-    android.hardware.wifi@1.0-impl \
+    android.hardware.wifi.offload@1.0-service \
     hostapd \
     hostapd_default.conf \
     libwpa_client \
