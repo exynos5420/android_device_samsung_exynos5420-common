@@ -18,4 +18,5 @@
             <instance>default</instance>
         </interface>
     </hal>
+<!-- removing fingerprint from manifest.xml. leaving this commit in temporarily so the git commit parent chain isn't broken and we have to rebase -->
 </manifest>
