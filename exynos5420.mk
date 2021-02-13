@@ -165,7 +165,7 @@ PRODUCT_COPY_FILES += \
 
 # Touch features
 PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samsung
+    vendor.lineage.touch@1.0-service.samsung.5420
 
 # Trust HAL
 PRODUCT_PACKAGES += \
