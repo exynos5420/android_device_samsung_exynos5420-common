@@ -167,6 +167,7 @@ PRODUCT_PACKAGES += \
 
 # Ramdisk
 PRODUCT_PACKAGES += \
+    init.recovery.universal5420.rc \
     init.samsung.rc \
     init.universal5420.rc \
     init.universal5420.usb.rc \
