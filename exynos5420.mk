@@ -51,7 +51,10 @@ TARGET_BOOTANIMATION_HALF_RES := true
 
 # Camera
 PRODUCT_PACKAGES += \
+    camera.device@1.0-impl.exynos5420 \
+    android.hardware.camera.provider@2.4-impl.exynos5420 \
     camera.universal5420 \
+    libshim_camera \
     libhwjpeg
 
 # First Stage Mount
