@@ -178,6 +178,10 @@ PRODUCT_PACKAGES += \
     libsecril-client \
     libsecril-client-sap
 
+# Samsung Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
 # Seccomp Filters
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
