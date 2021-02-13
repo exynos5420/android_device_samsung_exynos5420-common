@@ -49,6 +49,11 @@ PRODUCT_PACKAGES += \
     camera.universal5420 \
     libhwjpeg
 
+# Configstore
+PRODUCT_PACKAGES += \
+    android.hardware.configstore@1.0-impl \
+    android.hardware.configstore@1.1-service
+
 # First Stage Mount
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/ramdisk/fstab.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
