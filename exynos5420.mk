@@ -60,6 +60,11 @@ PRODUCT_PACKAGES += \
     android.hardware.drm@1.1-service.clearkey \
     android.hardware.drm@1.0-service
 
+# Fingerprint
+PRODUCT_PACKAGES += \
+    android.hardware.biometrics.fingerprint@2.0-service \
+    fingerprint.universal5420
+
 # First Stage Mount
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/ramdisk/fstab.universal5420:$(TARGET_COPY_OUT_RAMDISK)/fstab.universal5420 \
