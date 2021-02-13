@@ -165,11 +165,6 @@ PRODUCT_PACKAGES += \
     power.universal5420 \
     android.hardware.power@1.0-impl
 
-# Bluetooth HAL
-PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.0-impl \
-    libbt-vendor
-
 # Ramdisk
 PRODUCT_PACKAGES += \
     init.samsung.rc \
