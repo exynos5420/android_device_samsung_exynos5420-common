@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0c998db7_c3eebbd1",
+        "filename": "BoardConfigCommon.mk",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000137
+      },
+      "writtenOn": "2021-02-20T20:34:13Z",
+      "side": 1,
+      "message": "need to be changed from :\u003d to +\u003d because of commit 7689",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 61
+      },
+      "revId": "5045faeab850189488d9da5ba05c51f5b119ae27",
+      "serverId": "c6d92919-bfe7-411c-9f64-004a8163e0f0",
+      "unresolved": true
+    }
+  ]
+}
