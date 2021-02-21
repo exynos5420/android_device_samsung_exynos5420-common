@@ -729,7 +729,7 @@ int HAL_getCameraInfo(int cameraId, struct camera_info *info)
 }
 
 
-#define SET_METHOD(m) m : HAL_camera_device_##m
+#define SET_METHOD(m) .m = HAL_camera_device_##m
 
 static camera_device_ops_t camera_device_ops = {
         SET_METHOD(set_preview_window),
